@@ -1,0 +1,907 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>A Better Way to Learn AngularJS | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="IntroductionCongratulations on taking the plunge!
+This AngularJS course is built with the intent of exposing you to the best available resources on each Angular topic. Our desire is to present these topics richly, and from a variety of vantage points, in order to afford you a more complete perspective on them.
+This course is accompanied by AngularJS Tutorial: Learn to Build Modern Web Apps with MEAN.
+The learning curve of AngularJS can be described as a hockey stick. Getting started with apps featuring basic functionality is delightfully easy. However, building more complex apps often require understanding Angular’s inner workings. Failure to do so will cause development to become awkward and cumbersome.
+With AngularJS, the “Ready, Fire, Aim” learning methodology of duct taping together a handful of tutorials and a cursory glance through the documentation will lead to confusion and frustration. This curriculum is designed to properly guide you through each of the key Angular concepts thoroughly with a broad exposure to high quality content. With your eventual mastery of AngularJS, you will be able to fluently and efficiently construct large-scale applications.
+Prerequisites
+
+Moderate knowledge of HTML, CSS, and JavaScript
+Basic Model-View-Controller (MVC) concepts
+The Document Object Model (DOM)
+JavaScript functions, events, and error handling
+
+Resources
+Since AngularJS is still in its infancy relative to other JavaScript frameworks, the number of encyclopaedic resources on it is still insufficient. Therefore, the curriculum will employ a healthy number of excellent blogs in order to offer a more meaty perspective on respective topics.
+
+Required Resources
+AngularJS - O’Reilly Media (available on Amazon)
+John Lindquist’s egghead.io
+AngularJS docs
+
+
+Supplemental Resources
+Ben Nadel blog
+OneHungryMind
+year of moo
+Bruno Scopelliti blog
+
+
+
+Part 1. Kicking the TiresAngularJS is not a library.
+Rather, it is a JavaScript framework that embraces extending HTML into a more expressive and readable format. It allows you to decorate your HTML with special markup that synchronizes with your JavaScript leaving you to write your application logic instead of manually updating views. Whether you’re looking to augment existing JavaScript applications or harness the full power of the framework to create rich and interactive SPA’s, Angular can help you write cleaner and more efficient code.Filling the Tank
+We’ve found that the egghead.io videos are the best starting resource available, so every chapter will lead off with them. The transcribed screencasts and source code are provided along with the videos. We encourage you to follow along with them, as they make the video content much more readily digestible.
+As good as the egghead videos are, they should serve only as an introductory resource. Excerpts from the O’Reilly AngularJS book and the angularjs.org documentation complement the videos as the broader and more thorough source, and should be treated as the main reference for the course.Adjusting Your Mirrors
+When descending upon an entirely new topic, it is important to frame the topic correctly before diving into the minutia.
+Read the following two entries in the AngularJS guide docs, they will give you a good idea of what you’re about to get into. Don’t worry about picking up on every aspect of the topics they glaze over, all of these will be covered thoroughly in subsequent lessons.
+AngularJS Overview
+Introduction to AngularJSRevving the Engine
+Before we get on with it, we recommend this post:
+Things I Wish I Were Told About Angular.js
+It goes over a handful of topics that might be helpful in building the appropriate mental models while consuming the Angular curriculum. Some, probably most, of the terms will bounce right off you until you have gone through that section of the course, but it should provide valuable context when approaching a new topic.
+Now it’s off to the races!">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="A Better Way to Learn AngularJS"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Angular/">Angular</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>A Better Way to Learn AngularJS</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2015-01-13T04:47:50.000Z"><a href="/2015/01/13/A Better Way to Learn AngularJS/">2015-01-13</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Angular/" class="chip pink lighten-1">Angular</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Introduction"><span class="section table-of-contents-text">Introduction</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-1-Kicking-the-Tires"><span class="section table-of-contents-text">Part 1. Kicking the Tires</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-2-Taking-It-for-a-Spin"><span class="section table-of-contents-text">Part 2: Taking It for a Spin</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-3-Filters"><span class="section table-of-contents-text">Part 3: Filters</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-4-Directives"><span class="section table-of-contents-text">Part 4. Directives</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-5-Scope"><span class="section table-of-contents-text">Part 5: Scope</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-6-Application-Structure-and-Organization"><span class="section table-of-contents-text">Part 6: Application Structure and Organization</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-7-The-View-and-the-DOM"><span class="section table-of-contents-text">Part 7: The View and the DOM</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-8-Templates"><span class="section table-of-contents-text">Part 8: Templates</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-9-Routing"><span class="section table-of-contents-text">Part 9: Routing</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-10-Examples-and-Analysis"><span class="section table-of-contents-text">Part 10: Examples and Analysis</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-11-Under-the-Hood"><span class="section table-of-contents-text">Part 11: Under the Hood</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-12-Development-Environment-and-Testing"><span class="section table-of-contents-text">Part 12: Development Environment and Testing</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Part-13-http-and-Server-Interaction"><span class="section table-of-contents-text">Part 13. $http and Server Interaction</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Congratulations on taking the plunge!</p>
+<p>This AngularJS course is built with the intent of exposing you to the best available resources on each Angular topic. Our desire is to present these topics richly, and from a variety of vantage points, in order to afford you a more complete perspective on them.</p>
+<p>This course is accompanied by AngularJS Tutorial: Learn to Build Modern Web Apps with MEAN.</p>
+<p>The learning curve of AngularJS can be described as a hockey stick. Getting started with apps featuring basic functionality is delightfully easy. However, building more complex apps often require understanding Angular’s inner workings. Failure to do so will cause development to become awkward and cumbersome.</p>
+<p>With AngularJS, the “Ready, Fire, Aim” learning methodology of duct taping together a handful of tutorials and a cursory glance through the documentation will lead to confusion and frustration. This curriculum is designed to properly guide you through each of the key Angular concepts thoroughly with a broad exposure to high quality content. With your eventual mastery of AngularJS, you will be able to fluently and efficiently construct large-scale applications.</p>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>Moderate knowledge of HTML, CSS, and JavaScript</li>
+<li>Basic Model-View-Controller (MVC) concepts</li>
+<li>The Document Object Model (DOM)</li>
+<li>JavaScript functions, events, and error handling</li>
+</ul>
+<p><strong>Resources</strong></p>
+<p>Since AngularJS is still in its infancy relative to other JavaScript frameworks, the number of encyclopaedic resources on it is still insufficient. Therefore, the curriculum will employ a healthy number of excellent blogs in order to offer a more meaty perspective on respective topics.</p>
+<ul>
+<li>Required Resources<ul>
+<li>AngularJS - O’Reilly Media (available on Amazon)</li>
+<li>John Lindquist’s egghead.io</li>
+<li>AngularJS docs</li>
+</ul>
+</li>
+<li>Supplemental Resources<ul>
+<li>Ben Nadel blog</li>
+<li>OneHungryMind</li>
+<li>year of moo</li>
+<li>Bruno Scopelliti blog</li>
+</ul>
+</li>
+</ul>
+<h2 id="Part-1-Kicking-the-Tires"><a href="#Part-1-Kicking-the-Tires" class="headerlink" title="Part 1. Kicking the Tires"></a>Part 1. Kicking the Tires</h2><p>AngularJS is not a library.</p>
+<p>Rather, it is a JavaScript framework that embraces extending HTML into a more expressive and readable format. It allows you to decorate your HTML with special markup that synchronizes with your JavaScript leaving you to write your application logic instead of manually updating views. Whether you’re looking to augment existing JavaScript applications or harness the full power of the framework to create rich and interactive SPA’s, Angular can help you write cleaner and more efficient code.<br>Filling the Tank</p>
+<p>We’ve found that the egghead.io videos are the best starting resource available, so every chapter will lead off with them. The transcribed screencasts and source code are provided along with the videos. We encourage you to follow along with them, as they make the video content much more readily digestible.</p>
+<p>As good as the egghead videos are, they should serve only as an introductory resource. Excerpts from the O’Reilly AngularJS book and the angularjs.org documentation complement the videos as the broader and more thorough source, and should be treated as the main reference for the course.<br>Adjusting Your Mirrors</p>
+<p>When descending upon an entirely new topic, it is important to frame the topic correctly before diving into the minutia.</p>
+<p>Read the following two entries in the AngularJS guide docs, they will give you a good idea of what you’re about to get into. Don’t worry about picking up on every aspect of the topics they glaze over, all of these will be covered thoroughly in subsequent lessons.</p>
+<p>AngularJS Overview</p>
+<p>Introduction to AngularJS<br>Revving the Engine</p>
+<p>Before we get on with it, we recommend this post:</p>
+<p>Things I Wish I Were Told About Angular.js</p>
+<p>It goes over a handful of topics that might be helpful in building the appropriate mental models while consuming the Angular curriculum. Some, probably most, of the terms will bounce right off you until you have gone through that section of the course, but it should provide valuable context when approaching a new topic.</p>
+<p>Now it’s off to the races!<br><a id="more"></a></p>
+<h2 id="Part-2-Taking-It-for-a-Spin"><a href="#Part-2-Taking-It-for-a-Spin" class="headerlink" title="Part 2: Taking It for a Spin"></a>Part 2: Taking It for a Spin</h2><p>One of the awesome things about AngularJS is its usability right out of the box. Very little information about how the framework operates is needed to get up and running with your first application. With that in mind, go ahead and tear through the first five egghead videos:</p>
+<p>AngularJS - Binding</p>
+<p>AngularJS - Controllers</p>
+<p>AngularJS - The Dot</p>
+<p>AngularJS - Sharing Data Between Controllers</p>
+<p>AngularJS - Defining a Method on the Scope<br>Readings</p>
+<p>We’re going to crack the cover of AngularJS for the first time.</p>
+<p>Read all of Chapter 1. Introduction to Angular JS</p>
+<p>Read from the beginning of Chapter 2. Anatomy of an AngularJS Application to the section “Templates and Data Binding”<br>AngularJS Documentation</p>
+<p>The following set of guides will serve to reinforce many of the topics just covered, and explain some new ones in detail:</p>
+<p>Bootstrap</p>
+<p>Expressions</p>
+<p>Forms</p>
+<p>Data Binding In Angular</p>
+<h2 id="Part-3-Filters"><a href="#Part-3-Filters" class="headerlink" title="Part 3: Filters"></a>Part 3: Filters</h2><p>Filters are a simple but powerful tool in Angular, used primarily to format expressions in bindings in views and templates.</p>
+<p>These three egghead videos serve to cover the basics nicely:</p>
+<p>AngularJS - Filters</p>
+<p>AngularJS - ngFilter</p>
+<p>AngularJS - Built-In Filters<br>Readings</p>
+<p>In Chapter 2: “Anatomy of an AngularJS Application”, read the section “Formatting Data with Filters”<br>AngularJS Documentation</p>
+<p>Finally, the Angular guides offer a bit more depth on filters:</p>
+<p>Angular Filters</p>
+<h2 id="Part-4-Directives"><a href="#Part-4-Directives" class="headerlink" title="Part 4. Directives"></a>Part 4. Directives</h2><p>Now you’re really getting into the meat of what makes Angular special. Directives are certainly one of the most important facets of the framework, and as such, this is one of the biggest sections of the course. The egghead videos do a superb job covering many of the features and use cases of directives:</p>
+<p>AngularJS - First Directive</p>
+<p>AngularJS - Directive Restrictions</p>
+<p>AngularJS - Basic Behaviors</p>
+<p>AngularJS - Useful Behaviors</p>
+<p>AngularJS - Directives Talking to Controllers</p>
+<p>AngularJS - Directive to Directive Communication</p>
+<p>AngularJS - Transclusion Basics</p>
+<p>AngularJS - Components and Containers</p>
+<p>AngularJS - Directive Communication<br>Readings</p>
+<p>There’s a lot to digest in those videos, the text will help to clarify:</p>
+<p>Chapter 6: Directives - Read from the beginning of the chapter up to and including: In the section “API Overview”: Subsection, “Compile and Link Functions”</p>
+<p>Also, in section “API Overview”: Read subsection “Controllers”<br>AngularJS Documentation</p>
+<p>To wrap up, the Angular guides offer a bit more detail on the specifics of some aspects of directives:</p>
+<p>HTML Compiler</p>
+<p>Directives</p>
+<h2 id="Part-5-Scope"><a href="#Part-5-Scope" class="headerlink" title="Part 5: Scope"></a>Part 5: Scope</h2><p>Interestingly, scopes are dramatically underrepresented in mainstream Angular resources compared to how important they are. A solid understanding of scope mechanics is essential when scaling applications, as well as writing modular and testable code. Fortunately, the egghead videos do it justice:</p>
+<p>AngularJS - Understanding Isolate Scope</p>
+<p>AngularJS - Isolate Scope “@”</p>
+<p>AngularJS - Isolate Scope “=”</p>
+<p>AngularJS - Isolate Scope “&amp;”</p>
+<p>AngularJS - Isolate Scope Review<br>Readings</p>
+<p>Chapter 6: Directives - In the section “API Overview”: Read subsection “Scopes”<br>AngularJS Documentation</p>
+<p>Finally, check out the Angular docs for an in-depth analysis:</p>
+<p>Scopes</p>
+<h2 id="Part-6-Application-Structure-and-Organization"><a href="#Part-6-Application-Structure-and-Organization" class="headerlink" title="Part 6: Application Structure and Organization"></a>Part 6: Application Structure and Organization</h2><p>At this point, it’s important you step back to rethink and examine Angular as a whole. It’s easy to mentally paint yourself into a corner when learning a new language or framework, and a great way to combat this is by exposing yourself to alternate ways of thinking, and viewing the bigger picture.</p>
+<p>Watch these egghead videos to get started on thinking about alternative application structure:</p>
+<p>An Alternative Approach to Controllers</p>
+<p>Thinking Differently About Organization</p>
+<p>Experimental “Controller as” Syntax<br>Readings</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: Read the section “Organizing Dependencies with Modules”<br>AngularJS Documentation</p>
+<p>Read the AngularJS page on Modules</p>
+<h2 id="Part-7-The-View-and-the-DOM"><a href="#Part-7-The-View-and-the-DOM" class="headerlink" title="Part 7: The View and the DOM"></a>Part 7: The View and the DOM</h2><p>This section is a bit of a hybrid of seemingly unrelated topics, DOM manipulation, $watch, and view services, but they are closely related, as they all live in close proximity around the application’s views in implementation.</p>
+<p>The egghead videos do a superb job of tying these topics together:</p>
+<p>AngularJS - angular.element</p>
+<p>AngularJS - $index, $event, $log<br>Readings</p>
+<p>These book sections will give additional depth on these subjects:</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: in section “Templates and Data Binding”: Read “Observing Model Changes with $watch”</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: in section “Templates and Data Binding”: Read “Performance Considerations in $watch”</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: Read section “Changing the DOM with Directives”</p>
+<p>In Chapter 6. “Directives”: In the section “API Overview”: Read subsection “Manipulating DOM Elements”</p>
+<p>Additionally, we’ve put together a section that goes into further detail on DOM manipulation:</p>
+<p>Read jqLite, angular.element, and the DOM<br>AngularJS Documentation</p>
+<p>Working with CSS in Angular</p>
+<h2 id="Part-8-Templates"><a href="#Part-8-Templates" class="headerlink" title="Part 8: Templates"></a>Part 8: Templates</h2><p>Despite this being a short section, understanding Angular templates is critical to being able to build applications effectively.</p>
+<p>This handful of egghead videos is an excellent primer on the subject:</p>
+<p>templateUrl</p>
+<p>$templateCache<br>Readings</p>
+<p>The AngularJS book has a terrific and comprehensive section detailing templates:</p>
+<p>In Chapter 6. “Directives”: in the section “API Overview”: Read subsection “The Directive Definition Object”<br>AngularJS Documentation</p>
+<p>The documentation guide also has a quick but quality piece on Angular templates:</p>
+<p>Angular Templates</p>
+<h2 id="Part-9-Routing"><a href="#Part-9-Routing" class="headerlink" title="Part 9: Routing"></a>Part 9: Routing</h2><p>Angular routing, while not unduly complicated, does introduce a large number of concepts all at once. It also will handle the lion’s share (or close to it) of logic for many single page applications. It should then be no surprise that this is the largest section of the course.</p>
+<p>The egghead videos appropriately devote a great deal of podium time to routing:</p>
+<p>AngularJS - ng-view</p>
+<p>AngularJS - The config function</p>
+<p>AngularJS - $routeProvider api</p>
+<p>AngularJS - $routeParams</p>
+<p>AngularJS - redirectTo</p>
+<p>AngularJS - Promises</p>
+<p>AngularJS - Resolve</p>
+<p>AngularJS - Resolve conventions</p>
+<p>AngularJS - Resolve $routeChangeError</p>
+<p>AngularJS - Directive for Route Handling</p>
+<p>AngularJS - Route Life Cycle<br>Readings</p>
+<p>Some of the concepts introduced here are probably still fuzzy, and the text does an excellent job of clearing them up:</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: Read the section “Changing Views with Routes and $location”</p>
+<p>In Chapter 5. “Communicating with Servers”: Read the section “The $q and the Promise”</p>
+<p>In Chapter 5. “Communicating with Servers”: Read the section “Response Interception”</p>
+<p>In Chapter 7. “Other Concerns”: Read the section “$location”<br>AngularJS Documentation</p>
+<p>Finally, the Angular docs have a great section on the $location service:</p>
+<p>Using $location</p>
+<h2 id="Part-10-Examples-and-Analysis"><a href="#Part-10-Examples-and-Analysis" class="headerlink" title="Part 10: Examples and Analysis"></a>Part 10: Examples and Analysis</h2><p>At this point, most of the core Angular topics have been covered, and it’s appropriate to get into some examples.</p>
+<p>egghead has a good, though fairly trivial, example, “Zippy”:</p>
+<p>Building Zippy<br>Readings</p>
+<p>Next, the O’Reilly text has a great, chapter-long example that is terrific to work through:</p>
+<p>Read all of Chapter 4. “Analyzing an AngularJS App”<br>AngularJS Documentation</p>
+<p>Last, we recommend working through the AngularJS documentation tutorial. The format they present it in is a bit too hands-off to be exceedingly helpful, so we recommend playing around with it and modifying it to get the most out of the exercise.</p>
+<p>AngularJS Tutorial</p>
+<h2 id="Part-11-Under-the-Hood"><a href="#Part-11-Under-the-Hood" class="headerlink" title="Part 11: Under the Hood"></a>Part 11: Under the Hood</h2><p>At this juncture, it’s appropriate to dive into the niceties of AngularJS. In order to truly master the framework, hand-wavy arguments for how things work aren’t sufficient anymore. You need to get into the nitty-gritty of what makes Angular tick.</p>
+<p>These egghead videos offer an excellent primer for some increasingly advanced topics:</p>
+<p>$scope vs. scope</p>
+<p>Providers</p>
+<p>Injectors</p>
+<p>ngmin<br>Readings</p>
+<p>Following this, the book has a handful of sections detailing these and other new framework topics:</p>
+<p>In Chapter 7. “Other Concerns”: in the section “AngularJS Module Methods”: Read the section “Communicating Between Scopes with $on, $emit, and $broadcast”</p>
+<p>Additionally,</p>
+<p>Read this in-depth analysis of $digest<br>AngularJS Documentation</p>
+<p>Finally, there are a healthy number of Angular documentation guide pages that really get down into dissecting Angular. These are some of the best resources on Angular’s innards out there, make sure and fully take them in:</p>
+<p>Conceptual Overview</p>
+<p>Dependency Injection</p>
+<p>Angular Services</p>
+<h2 id="Part-12-Development-Environment-and-Testing"><a href="#Part-12-Development-Environment-and-Testing" class="headerlink" title="Part 12: Development Environment and Testing"></a>Part 12: Development Environment and Testing</h2><p>Much of Angular’s design is built around being highly testable. Central to this is the widespread utilization of dependency injection, which you read about in Chapter 11. Not only this, but with tools like Yeoman available, a robust test suite becomes realistic and manageable.</p>
+<p>There is only one egghead video on testing, and it gives a simplistic overview of a unit test on a filter. (It’s worth mentioning that the Testacular test runner is now called ‘Karma’):</p>
+<p>AngularJS - Testing Overview<br>Readings</p>
+<p>We’d like to get a bit more in depth than that, so next read all of Ch.3 in O’Reilly. This chapter focuses on Yeoman, which is a set of productivity tools that make Angular a lot more digestible: Yo, a scaffolding tool, Grunt, the build and testing tool, and Bower, the package management tool.</p>
+<p>Read Chapter 3: Developing in AngularJS<br>Meet the Gang</p>
+<p>A person new to testing might be a little overwhelmed with these concepts and how they play together in the world of testing. This reference should help out:</p>
+<ul>
+<li>Yeoman has the scaffolding tool yo that generates an application skeleton to start out with, complete with things like Bootstrap or a pre-configured testing setup. The scaffold of the application is different in many ways to the angular-seed scaffold, but it is important to note that they both use Karma and Jasmine in the same ways.</li>
+<li>angular-seed is a ready-to-eat AngularJS scaffold available on their github with directory structure and testing amenities pre-prepared. Testing this application is accomplished by running a standalone Karma test server.</li>
+<li>Grunt is the testing tool used in Yeoman, but it is used as a wrapper for Karma.</li>
+<li>Karma is the actual test runner that is used to test AngularJS. It can be used standalone from Grunt. Karma circumvents testing inconsistencies across browsers, which would happen with things like PhantomJS, by actually launching a browser and running the tests in it.</li>
+<li>Jasmine is the testing framework which is used for unit tests by default in Karma. Angular E2E tests with Karma don’t and can’t use the Jasmine adapter, although E2E tests use very similar syntax with the Angular Scenario Runner. This blog post does a fine job of going through how to actually author some Jasmine tests, and gives some excellent examples.</li>
+</ul>
+<p>AngularJS Documentation</p>
+<p>Now that we have fleshed out how testing should generally go, let’s take a look at the Angular docs on testing. These are going to give some more information on how to think about Angular testing. While they are a good resource to have, regrettably, some of them are not yet complete.</p>
+<p>Unit Testing</p>
+<p>E2E Testing<br>More Readings and Examples</p>
+<p>Now, read through How to Test an AngularJS Directive. This blog post goes through setting up Yeoman, generating a very simple sample application, writing tests for a directive, and running tests using Karma.</p>
+<p>Finally, go through one of the better Angular testing resources to date, Full-Spectrum Testing with AngularJS and Karma. This is an outstanding resource that has fantastic explanations and demonstrations of testing with Grunt and Karma. Included are examples for each of the major testing categories in Angular. It also adds the intermediate Midway test paradigm to the fray, which is a compelling convenience if you’re trying to streamline authoring tests.</p>
+<h2 id="Part-13-http-and-Server-Interaction"><a href="#Part-13-http-and-Server-Interaction" class="headerlink" title="Part 13. $http and Server Interaction"></a>Part 13. $http and Server Interaction</h2><p>$http</p>
+<p>In the face of a slew of new concepts, it’s important to not overthink the $http service.</p>
+<p>$http can be thought of as a wrapper to make requests to external HTTP entities with the browser’s XHR object or JSONP. Because of the nature of these requests, it employs callbacks afforded to it by the $q defer/promise API.</p>
+<p>More generally, $http is used predominantly for AJAX requests. Its API exists as you would expect, with the ability to make GET, POST, PUT, DELETE, HEAD, and JSONP requests. You are responsible for making these calls manually, and for constructing how to handle the objects they return, and the callbacks for various outcomes that might occur with an asynchronous request.<br>$resource</p>
+<p>AngularJS offers another level abstractions above $http, the $resource service. This is a convenience offered to you when dealing with external resources that are RESTful. It wraps the $http service, which is pointed at a singular endpoint, and presents a REST API on the $resource to handle RESTful requests. The $resource get() method returns a Resource object, which can then be modified with CRUD (or custom defined) operations invoked upon it.<br>Authentication</p>
+<p>Since services are singletons, and can be injected pretty much anywhere, they are perfect for use in authentication logic. There is a diverse spectrum of implementations on how exactly to construct the service, but they are all variations on basically the same theme.<br><figure class="highlight js"><table><tr><td class="code"><pre><div class="line">myApp.factory(<span class="string">'AuthenticationService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> current_user;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    signIn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="comment">// check password on server, get user data, unique token, etc.</span></div><div class="line">    &#125;,</div><div class="line">    signOut: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="comment">// clear current_user data, unset logged in status, etc.</span></div><div class="line">    &#125;,</div><div class="line">    isSignedIn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="comment">// logic to check if current user has signed in</span></div><div class="line">    &#125;,</div><div class="line">    currentUser: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="comment">// return the current_user object, or handle if the user is not signed in</span></div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Since it is a service, you can inject this to your heart’s desire, set watchers on its methods, use the user data in views, handle routing conditionals based on signin status, etc. Since all this data is still just freely living in the AngularJS framework, you still need to exercise the same security precautions when performing server transactions involving authentication.</p>
+<p>Read this blog entry, Deal with users authentication in an AngularJS web app. It offers excellent insight into service-based Angular authentication.<br>Readings</p>
+<p>The text offers a wealth of information on interacting with servers:</p>
+<p>In Chapter 2. “Anatomy of an AngularJS Application”: in the section “Changing Views with Routes and $location”: Read the subsection “Talking to Servers”</p>
+<p>Read all of Chapter 5. “Communicating with Servers”</p>
+<p>In Chapter 8. “Cheatsheet and Recipes”: Read the section “Working with Servers and Login”<br>AngularJS Documentation</p>
+<p>Finally, check out the Angular API docs on $http and $resource:</p>
+<p>The $http service</p>
+<p>The $resource service</p>
+
+                
+<p class="pink-link-context">
+    <a href="/2015/01/13/Python and Flask Are Ridiculously Powerful/" rel="next" title="Python and Flask Are Ridiculously Powerful">
+    上一篇：Python and Flask Are Ridiculously Powerful
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2014/12/31/AngularJS相关工具/" rel="next" title="AngularJS相关工具">
+    下一篇：AngularJS相关工具
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

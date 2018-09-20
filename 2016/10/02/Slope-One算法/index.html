@@ -1,0 +1,741 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Slope One算法 | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="介绍Slope One算法是一种比较流行的基于物品的协同过滤算法, 最大的优点就是简单. 它是在一篇名为: Slope One: 基于在线评分系统的协同过滤算法的论文中提出的.
+用一个简单的例子来了解它. 假设Amy给SPY打了3分, Whitney Houston打了4分; Ben给SPY打了4分. 来预测Ben会给Whitney Houston打几分.
+
+
+
+
+PSY
+Whitney Houston
+
+
+
+
+Amy
+3
+4
+
+
+Ben
+4
+?
+
+
+
+先来简单预测一下: 由于Amy给Whitney Houston打的分数比PSY高一分, 所以预测Ben也会给高一分, 即5分.">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Slope One算法"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/机器学习/">机器学习</a><a class="breadcrumb" href="/categories/机器学习/算法/">算法</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Slope One算法</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-10-02T11:23:30.000Z"><a href="/2016/10/02/Slope-One算法/">2016-10-02</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/机器学习/" class="chip pink lighten-1">机器学习</a>
+        
+            <a href="/tags/算法/" class="chip pink lighten-1">算法</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#介绍"><span class="section table-of-contents-text">介绍</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#第一步-计算差值"><span class="section table-of-contents-text">第一步: 计算差值</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#第二步-使用加权的Slope-One算法进行预测"><span class="section table-of-contents-text">第二步: 使用加权的Slope One算法进行预测</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#代码如下"><span class="section table-of-contents-text">代码如下:</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Slope One算法是一种比较流行的基于物品的协同过滤算法, 最大的优点就是简单. 它是在一篇名为: <a href="http://www.daniel-lemire.com/fr/abstracts/SDM2005.html" target="_blank" rel="external">Slope One: 基于在线评分系统的协同过滤算法</a>的论文中提出的.</p>
+<p>用一个简单的例子来了解它. 假设Amy给SPY打了3分, Whitney Houston打了4分; Ben给SPY打了4分. 来预测Ben会给Whitney Houston打几分.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">PSY</th>
+<th style="text-align:center">Whitney Houston</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Amy</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">Ben</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">?</td>
+</tr>
+</tbody>
+</table>
+<p>先来简单预测一下: 由于Amy给Whitney Houston打的分数比PSY高一分, 所以预测Ben也会给高一分, 即5分.</p>
+<a id="more"></a>
+<p>还有其他的Slope One算法, 比如加权Slope One.</p>
+<p>可以将Slope One分为2个步骤:</p>
+<ol>
+<li>计算两个物品之间的差值(可以在闲时批量计算). 在上文的例子中, 这个步骤就是计算出Whitney Hoston要比PSY高一分.</li>
+<li>进行预测, 比如一个新用户Ben, 从未听过Whitney Houston的歌曲, 想要预测他是否喜欢这个歌手.</li>
+</ol>
+<p>通过利用他评价过的歌手以及计算好的歌手之间的评分差值, 就可以进行预测了.</p>
+<h3 id="第一步-计算差值"><a href="#第一步-计算差值" class="headerlink" title="第一步: 计算差值"></a>第一步: 计算差值</h3><p>计算物品之间的差异的公式:</p>
+<p>$$ dev_{i,j} = \sum_{u \in S_{i,j}(X)} {u_i - u_j \over card(S_{i,j}(X))} $$</p>
+<p>其中,card(S)表示S中有多少个元素;X表示所有评分值的集合;card(Sj,i(X))则表示同时评<br>价过物品j和i的用户数。<br>我们来考察PSY和Taylor    Swift之间的差值,card(Sj,i(X))的值是2——因为有两个用户(Amy<br>和Ben)同时对PSY和Taylor    Swift打过分。</p>
+<h3 id="第二步-使用加权的Slope-One算法进行预测"><a href="#第二步-使用加权的Slope-One算法进行预测" class="headerlink" title="第二步: 使用加权的Slope One算法进行预测"></a>第二步: 使用加权的Slope One算法进行预测</h3><p>计算公式:</p>
+<p>$$ P^{wS1}(u)_j = {\sum_{i \in S(u)-{j}}<br>{(dev_{j,i} + u_i)c_{j,i}} \over {\sum_{i\in S(u) - {j}}c_{j,i}}} $$</p>
+<p>PWS1(u)j 表示我们将预测用户u对物品i的评分。比如PWS1(Ben)Whitney    Houston 表示Ben对<br>Whitney    Houston的预测评分。下面就让我们来求解这个问题。<br>首先来看分子:<br>$$ \sum_{i \in S(u)-{j}} $$<br>表示遍历Ben评价过的所有歌手,除了Whitney    Houston以外(也就是-{j}的意思)。<br>整个分子的意思是:对于Ben评价过的所有歌手(Whitney    Houston除外),找出Whitney<br>Houston和这些歌手之间的差值,并将差值加上Ben对这个歌手的评分。<br>同时,我们要将这个结果乘以同时评价过两位歌手的用户数。<br>让我们分解开来看,先将Ben的评分情况和两两歌手之间的差异值展示如下:</p>
+<h3 id="代码如下"><a href="#代码如下" class="headerlink" title="代码如下:"></a>代码如下:</h3><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</div><div class="line"></div><div class="line">data = pd.read_csv(<span class="string">'../chapter-2/Movie_Ratings.csv'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 计算m1和m2的差异值</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_slope</span><span class="params">(m1, m2, dataframe)</span>:</span></div><div class="line">    slope_df = dataframe.loc[[m1, m2]].T.dropna()</div><div class="line">    <span class="keyword">return</span> (slope_df[m2] - slope_df[m1]).sum() / len(slope_df)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_slope_df</span><span class="params">(dataframe)</span>:</span></div><div class="line">    df = DataFrame(</div><div class="line">        np.zeros(len(data.index) ** <span class="number">2</span>).reshape(</div><div class="line">            len(data.index), <span class="number">-1</span>),</div><div class="line">        index=data.index,</div><div class="line">        columns=data.index</div><div class="line">    )</div><div class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> dataframe.index:</div><div class="line">        <span class="keyword">for</span> _m <span class="keyword">in</span> dataframe.index.drop(m):</div><div class="line">            df[m][_m] = get_slope(m, _m, dataframe)</div><div class="line">    <span class="keyword">return</span> df</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_numerator</span><span class="params">(user, movie, slope_df, dataframe)</span>:</span></div><div class="line">    user_series = dataframe[user]</div><div class="line">    <span class="keyword">if</span> movie <span class="keyword">in</span> user_series:</div><div class="line">        user_series = user_series.drop(movie)</div><div class="line">    user_series = user_series.dropna()</div><div class="line">    movies = dataframe[user].dropna()</div><div class="line">    <span class="keyword">if</span> movie <span class="keyword">in</span> movies:</div><div class="line">        movies = movies.drop(movie)</div><div class="line">    result = <span class="number">0.0</span></div><div class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> movies.index:</div><div class="line">        _m = slope_df[movie][m] + dataframe[user][m]</div><div class="line">        _m *= len(dataframe.loc[[movie, m]].T.dropna())</div><div class="line">        result += _m</div><div class="line">    <span class="keyword">return</span> result</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_denominator</span><span class="params">(user, movie, slope_df, dataframe)</span>:</span></div><div class="line">    movies = dataframe[user].dropna()</div><div class="line">    <span class="keyword">if</span> movie <span class="keyword">in</span> movies:</div><div class="line">        movies = movies.drop(movie)</div><div class="line">    result = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> movies.index:</div><div class="line">        result += len(dataframe.loc[[movie, m]].T.dropna())</div><div class="line">    <span class="keyword">return</span> result</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_slope_value</span><span class="params">(user, movie, slope_df, dataframe)</span>:</span></div><div class="line">    numerator = get_numerator(user, movie, slope_df, dataframe)</div><div class="line">    denominator = get_denominator(user, movie, slope_df, dataframe)</div><div class="line">    <span class="keyword">return</span> numerator / denominator</div><div class="line"></div><div class="line">user = <span class="string">'Heather'</span></div><div class="line">movie = <span class="string">'Blade Runner'</span></div><div class="line">data = pd.read_csv(<span class="string">'../chapter-2/Movie_Ratings.csv'</span>)</div><div class="line">slope_df = get_slope_df(data)</div><div class="line"><span class="keyword">print</span> (get_slope_value(user, movie, slope_df, data))</div></pre></td></tr></table></figure>
+
+                
+<p class="pink-link-context">
+    <a href="/2016/10/03/余弦相似度算法/" rel="next" title="余弦相似度算法">
+    上一篇：余弦相似度算法
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2016/09/04/个人简历/" rel="next" title="个人简历">
+    下一篇：个人简历
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

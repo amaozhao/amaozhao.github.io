@@ -1,0 +1,815 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>AngularJS相关工具 | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="AngularJS 是一组用来开发Web页面的框架、模板以及数据绑定和丰富UI组件。它支持整个开发进程，提供web应用的架构，无需进行手工DOM操作。 AngularJS很小，只有60K，兼容主流浏览器，与 jQuery 配合良好。
+数据绑定可能是AngularJS最酷最实用的特性。它能够帮助你避免书写大量的初始代码从而节约开发时间。一个典型的web应用可能包含了80%的代码用来处理，查询和监听DOM。数据绑定使得代码更少，你可以专注于你的应用。开源中国收录的 AngularJS 相关软件：
+AngularJS 扩展：
+AngularJS URL 复制 Angular-bind-hash
+angularjs开发协助工具 fex
+angular-semantic-ui
+angular-semantic
+angular-file-upload —— NG 文件上传扩展
+Satellizer —— AngularJS 的认证模块
+纯 AngularJS 实现的 Bootstrap 组件 UI Bootstrap
+基于 AngularJS 实现的自动完成的 UI 实现 angular-smarty
+AngularJS 过滤器 AngularJS Emoji Filter
+AngularJS 表单构建器 angular-form-builder
+Foundation 的 AngularJS 版本 angular-foundation
+AngularJS 的国际化和本地化模块 angular-translate
+AngularJS 的UI增强指令集 AngularUI
+AngularJS UI 组件 adapt-strap
+AngularJS 扩展 gc-http-factory
+AngularJS 扩展 angular-data
+AngularJS 扩展 angular-sails
+ng-view 的替代品 overmind.js
+angularSails
+ngSea
+ngCordova
+GoAngular
+AngularStrap
+AngularJS Eclipse Plugin
+bootstrap-AngularJS">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="AngularJS相关工具"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Angular/">Angular</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>AngularJS相关工具</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2014-12-31T11:43:22.000Z"><a href="/2014/12/31/AngularJS相关工具/">2014-12-31</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Angular/" class="chip pink lighten-1">Angular</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#AngularJS-扩展："><span class="section table-of-contents-text">AngularJS 扩展：</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#其他"><span class="section table-of-contents-text">其他</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#开源中国-AngularJS-优秀文章汇总"><span class="section table-of-contents-text">开源中国 AngularJS 优秀文章汇总</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p><a href="http://angularjs.org" target="_blank" rel="external"> AngularJS</a> 是一组用来开发Web页面的框架、模板以及数据绑定和丰富UI组件。它支持整个开发进程，提供web应用的架构，无需进行手工DOM操作。 AngularJS很小，只有60K，兼容主流浏览器，与 jQuery 配合良好。</p>
+<p>数据绑定可能是AngularJS最酷最实用的特性。它能够帮助你避免书写大量的初始代码从而节约开发时间。一个典型的web应用可能包含了80%的代码用来处理，查询和监听DOM。数据绑定使得代码更少，你可以专注于你的应用。<br>开源中国收录的 AngularJS 相关软件：</p>
+<h2 id="AngularJS-扩展："><a href="#AngularJS-扩展：" class="headerlink" title="AngularJS 扩展："></a>AngularJS 扩展：</h2><ul>
+<li><a href="http://www.oschina.net/p/angular-bind-hash" target="_blank" rel="external">AngularJS URL 复制 Angular-bind-hash</a></li>
+<li><a href="http://www.oschina.net/p/fex" target="_blank" rel="external">angularjs开发协助工具 fex</a></li>
+<li><a href="http://www.oschina.net/p/angular-semantic-ui" target="_blank" rel="external">angular-semantic-ui</a></li>
+<li><a href="http://www.oschina.net/p/angular-semantic" target="_blank" rel="external">angular-semantic</a></li>
+<li><a href="http://www.oschina.net/p/angular-file-upload" target="_blank" rel="external">angular-file-upload —— NG 文件上传扩展</a></li>
+<li><a href="http://www.oschina.net/p/satellizer" target="_blank" rel="external">Satellizer</a> —— AngularJS 的认证模块</li>
+<li><a href="http://www.oschina.net/p/ui-bootstrap" target="_blank" rel="external">纯 AngularJS 实现的 Bootstrap 组件 UI Bootstrap</a></li>
+<li><a href="http://www.oschina.net/p/angular-smarty" target="_blank" rel="external">基于 AngularJS 实现的自动完成的 UI 实现 angular-smarty</a></li>
+<li><a href="http://www.oschina.net/p/angularjs-emoji-filter" target="_blank" rel="external">AngularJS 过滤器 AngularJS Emoji Filter</a></li>
+<li><a href="http://www.oschina.net/p/angular-form-builder" target="_blank" rel="external">AngularJS 表单构建器 angular-form-builder</a></li>
+<li><a href="http://www.oschina.net/p/angular-foundation" target="_blank" rel="external">Foundation 的 AngularJS 版本 angular-foundation</a></li>
+<li><a href="http://www.oschina.net/p/angular-translate" target="_blank" rel="external">AngularJS 的国际化和本地化模块 angular-translate</a></li>
+<li><a href="http://www.oschina.net/p/angularui" target="_blank" rel="external">AngularJS 的UI增强指令集 AngularUI</a></li>
+<li><a href="http://www.oschina.net/p/adapt-strap" target="_blank" rel="external">AngularJS UI 组件 adapt-strap</a></li>
+<li><a href="http://www.oschina.net/p/gc-http-factory" target="_blank" rel="external">AngularJS 扩展 gc-http-factory</a></li>
+<li><a href="http://www.oschina.net/p/angular-data" target="_blank" rel="external">AngularJS 扩展 angular-data</a></li>
+<li><a href="http://www.oschina.net/p/angular-sails" target="_blank" rel="external">AngularJS 扩展 angular-sails</a></li>
+<li><a href="http://www.oschina.net/p/overmind-js" target="_blank" rel="external">ng-view 的替代品 overmind.js</a></li>
+<li><a href="http://www.oschina.net/p/angularsails" target="_blank" rel="external">angularSails</a></li>
+<li><a href="http://www.oschina.net/p/ngsea" target="_blank" rel="external">ngSea</a></li>
+<li><a href="http://www.oschina.net/p/ngcordova" target="_blank" rel="external">ngCordova</a></li>
+<li><a href="http://www.oschina.net/p/goangular" target="_blank" rel="external">GoAngular</a></li>
+<li><a href="http://www.oschina.net/p/angularstrap" target="_blank" rel="external">AngularStrap</a></li>
+<li><a href="http://www.oschina.net/p/angularjs-eclipse" target="_blank" rel="external">AngularJS Eclipse Plugin</a></li>
+<li><a href="http://www.oschina.net/p/bootstrap-angularjs" target="_blank" rel="external">bootstrap-AngularJS</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><a href="http://www.oschina.net/p/taiga" target="_blank" rel="external">Taiga —— Django+AngularJS 实现的项目管理</a></li>
+<li><a href="http://www.oschina.net/p/ngmario" target="_blank" rel="external">ngMario —— 基于 AngularJS 实现的超级玛丽</a></li>
+<li><a href="http://www.oschina.net/p/commafeed" target="_blank" rel="external">CommaFeed —— 开源的 Google Reader 实现</a></li>
+<li><a href="http://www.oschina.net/p/protractor" target="_blank" rel="external">测试运行工具 Protractor</a></li>
+<li><a href="http://www.oschina.net/p/anstorm" target="_blank" rel="external">多人BLOG系统 ANS Angularjs NstormJs web framework v 0.4.2</a></li>
+<li><a href="http://www.oschina.net/p/classy" target="_blank" rel="external">AngularJS 基于类控制器的清理工具 Classy</a></li>
+<li><a href="http://www.oschina.net/p/definitelytyped" target="_blank" rel="external">TypeScript 类型定义 DefinitelyTyped</a></li>
+<li><a href="http://www.oschina.net/p/ionic" target="_blank" rel="external">HTML5 移动应用框架 ionic</a></li>
+<li><a href="http://www.oschina.net/p/commafeed" target="_blank" rel="external">RSS 阅读器 CommaFeed</a></li>
+<li><a href="http://www.oschina.net/p/regularjs" target="_blank" rel="external">mvvm模式构建组件库 RegularJS</a></li>
+<li><a href="http://www.oschina.net/p/jsgen" target="_blank" rel="external">社区网站系统 jsGen</a></li>
+<li><a href="http://www.oschina.net/p/deadsimplewhiteboard" target="_blank" rel="external">协作式白板 DeadSimpleWhiteboard</a></li>
+<li><a href="http://www.oschina.net/p/responsive-dashboard" target="_blank" rel="external">响应式操作面板 Responsive-Dashboard</a></li>
+<li><a href="http://www.oschina.net/p/bootstrap-magic" target="_blank" rel="external">Bootstrap 主题生成器 bootstrap-magic</a></li>
+<li><a href="http://www.oschina.net/p/jhipster" target="_blank" rel="external">Yeoman 的生成器 JHipster</a></li>
+<li><a href="http://www.oschina.net/p/planjs" target="_blank" rel="external">静态项目排期表 plan.js</a></li>
+<li><a href="http://www.oschina.net/p/victorique" target="_blank" rel="external">错误信息记录服务 Victorique</a></li>
+</ul>
+<h2 id="开源中国-AngularJS-优秀文章汇总"><a href="#开源中国-AngularJS-优秀文章汇总" class="headerlink" title="开源中国 AngularJS 优秀文章汇总"></a>开源中国 AngularJS 优秀文章汇总</h2><ul>
+<li><a href="http://www.oschina.net/question/1765084_195634" target="_blank" rel="external">OSChina 第 56 期高手问答 —— AngularJS</a></li>
+<li><a href="http://www.oschina.net/translate/21-best-javascript-frameworks-2014" target="_blank" rel="external">2014 年最火的 21 个 JavaScript 框架</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-the-next-big-thing" target="_blank" rel="external">AngularJS - 下一个大框架</a></li>
+<li><a href="http://www.oschina.net/translate/javascript-framework-comparison" target="_blank" rel="external">AngularJS 、Backbone.js 和 Ember.js 的比较</a></li>
+<li><a href="http://www.oschina.net/translate/frameworkless-javascript" target="_blank" rel="external">JavaScript 的轻框架开发</a></li>
+<li><a href="http://www.oschina.net/translate/top-10-mistakes-angularjs-developers-make" target="_blank" rel="external">AngularJS 开发者最常犯的 10 个错误</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-ie-compatibility" target="_blank" rel="external">AngularJS 的 IE 兼容性</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-support-in-phpstorm" target="_blank" rel="external">PhpStorm 对 AngularJS 的支持</a></li>
+<li><a href="http://www.oschina.net/translate/the-angular-way" target="_blank" rel="external">Angular 编程思想 </a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-hello-world-code-example" target="_blank" rel="external">AngularJS Hello World 代码实例，只需 6 步</a></li>
+<li><a href="http://www.oschina.net/translate/angular-13-html-forms" target="_blank" rel="external">AngularJS 1.3 提升了 HTML 表单</a></li>
+<li><a href="http://www.oschina.net/translate/delaying-the-digest-cycle-in-angularjs" target="_blank" rel="external">AngularJS 1.3 支持使用 $digest() 循环实现延迟</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-role-based-access-on-gui" target="_blank" rel="external">AngularJS – 实现基于角色访问控制的 GUI</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-organizing-your-code-with-modules" target="_blank" rel="external">AngularJS —— 使用模块组织你的代码</a></li>
+<li><a href="http://www.oschina.net/translate/delaying-the-digest-cycle-in-angularjs" target="_blank" rel="external">AngularJS 的自定义指令</a></li>
+<li><a href="http://www.oschina.net/translate/hailing-all-frequencies-communicating-in-angularjs-with-the-pubsub-design-pattern" target="_blank" rel="external">AngularJS 中的通信(发布订阅模式)</a></li>
+<li><a href="http://www.oschina.net/translate/post-data-ngresource-restful-apis-spring-mvc" target="_blank" rel="external">AngularJS —— 使用 ngResource、RESTful APIs 和 Spring MVC 框架提交数据</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-form-validation" target="_blank" rel="external">AngularJS 的表单验证</a></li>
+<li><a href="http://www.oschina.net/translate/submitting-ajax-forms-the-angularjs-way" target="_blank" rel="external">AngularJS 提交表单的方式</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-ui-router-nested-routes" target="_blank" rel="external">AngularJS ui-router (嵌套路由)</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-handle-xss-vulnerability-scenarios" target="_blank" rel="external">AngularJS – 如何处理 XSS 漏洞</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-factory-vs-service-vs-provider" target="_blank" rel="external">AngularJS 之 Factory vs Service vs Provider</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-seo-with-prerender-io" target="_blank" rel="external">AngularJS 使用 Prerender.io 处理 SEO 的问题</a></li>
+<li><a href="http://www.oschina.net/translate/submitting-ajax-forms-the-angularjs-way" target="_blank" rel="external">AngularJS 使用 UI Router 实现表单向导</a></li>
+<li><a href="http://www.oschina.net/translate/scalable-approach-page-transitions-angularjs" target="_blank" rel="external">AngularJS 实现页面切换的一个可伸缩方法</a></li>
+<li><a href="http://www.oschina.net/translate/pretty-urls-in-angularjs-removing-the-hashtag" target="_blank" rel="external">AngularJS 中的友好 URL —— 移除URL 中的 #</a></li>
+<li><a href="http://www.oschina.net/translate/building-2048-in-angularjs" target="_blank" rel="external">使用 AngularJS 开发 2048 游戏</a></li>
+<li><a href="http://www.oschina.net/translate/freedreadr-rss-reader-created-with-angularjs" target="_blank" rel="external">使用 AngularJS 创建的 RSS 阅读器 —— FreedReadR</a></li>
+<li><a href="http://www.oschina.net/translate/developing-a-large-scale-application-with-a-single" target="_blank" rel="external">使用 AngularJS 开发一个大规模的单页应用（SPA）</a></li>
+<li><a href="http://www.oschina.net/translate/single-page-apps-with-angularjs-routing-and-templating" target="_blank" rel="external">使用 AngularJS 的路由和模板实现单页应用 (Single Page)</a></li>
+<li><a href="http://www.oschina.net/translate/create-a-laravel-and-angular-single-page-comment-application" target="_blank" rel="external">使用 Laravel 和 Angular 创建一个单页的评论应用</a></li>
+<li><a href="http://www.oschina.net/translate/sample-mobile-application-with-angularjs" target="_blank" rel="external">使用 AngularJS 开发的移动应用示例</a></li>
+<li><a href="http://www.oschina.net/translate/how-to-use-ngshow-and-nghide" target="_blank" rel="external">如何使用 AngularJS 的 ngShow 和 ngHide</a></li>
+<li><a href="http://www.oschina.net/translate/track-angular-js-exceptions-automatically" target="_blank" rel="external">如何自动跟踪 Angular.js 的异常</a></li>
+<li><a href="http://www.oschina.net/translate/how-to-unit-test-controllers-in-angularjs-without-setting-your-hair-on-fire" target="_blank" rel="external">如何在 AngularJS 中对控制器进行单元测试</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-lifetime-management-lazy" target="_blank" rel="external">AngularJS 生命周期管理、懒加载和其他高级 DI 技术</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-routing-security" target="_blank" rel="external">AngularJS 路由的安全性处理</a></li>
+<li><a href="http://www.oschina.net/translate/javascript-animations-angularjs-applications" target="_blank" rel="external">AngularJS 应用中实现 JavaScript 动画效果</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-performance-improvement" target="_blank" rel="external">AngularJS 性能优化二三事</a></li>
+<li><a href="http://www.oschina.net/translate/super-simple-angularjs-web-app-realtime-vcard-crea" target="_blank" rel="external">超级简单的 AngularJS 应用 —— 实时创建 vCard</a></li>
+<li><a href="http://www.oschina.net/translate/better-ux-with-angularjs-directives" target="_blank" rel="external">改善用户体验的 3 个 AngularJS 指令</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-filter-creating-custom-filter" target="_blank" rel="external">创建 AngularJS 自定义过滤器，带自定义参数</a></li>
+<li><a href="http://www.oschina.net/translate/setting-up-states-from-a-json-file-in-angularjs-applications" target="_blank" rel="external">在 AngularJS 应用中通过 JSON 文件来设置状态</a></li>
+<li><a href="http://www.oschina.net/translate/handling-checkboxes-and-radio-buttons-in-angular-forms" target="_blank" rel="external">在 AngularJS 应用中处理单选框和复选框</a></li>
+<li><a href="http://www.oschina.net/translate/angularjs-console" target="_blank" rel="external">通过终端调试 AngularJS 应用</a></li>
+<li><a href="http://www.oschina.net/translate/animating-angularjs-apps-ngview" target="_blank" rel="external">让你的 AngularJS 应用动起来 ： ngView</a></li>
+<li><a href="http://www.oschina.net/translate/autocomplete-ui-in-angularjs" target="_blank" rel="external">angular-smarty ： 一个 AngularJS 的自动完成 UI 实现</a></li>
+<li><a href="http://www.oschina.net/translate/meteor-vs-angular" target="_blank" rel="external">Meteor vs Angular</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/303758" target="_blank" rel="external">AngularJS 通过 CORS 实现跨域方案</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/300595" target="_blank" rel="external">Angular 实现权限控制 - 基于RBAC</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/293631" target="_blank" rel="external">不可错过的 AngularJS 应用技巧</a></li>
+<li><a href="http://my.oschina.net/felumanman/blog/330624" target="_blank" rel="external">Angularjs 总结 (Form)</a></li>
+<li><a href="http://my.oschina.net/ilivebox/blog/289670" target="_blank" rel="external">AngularJS 自定义控件</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/280400" target="_blank" rel="external">Angular 项目构建指南 - 不再为 Angular 构建而犹豫不决</a></li>
+<li><a href="http://my.oschina.net/trumanspace/blog/207449" target="_blank" rel="external">整合 jQuery Mobile+AngularJS 经验谈</a></li>
+<li><a href="http://my.oschina.net/buwei/blog/191640" target="_blank" rel="external">AngularJS的post请求，SpringMVC后台接收不到参数值的解决方案</a></li>
+<li><a href="http://my.oschina.net/zhaoxiaoben/blog/161458" target="_blank" rel="external">用 karma 测试 Angularjs 应用</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/349044" target="_blank" rel="external">通过Express4构建Restful API服务器 - 结合AngularJS前后端分离开发</a></li>
+<li><a href="http://my.oschina.net/blogshi/blog/347114" target="_blank" rel="external">通过路由管理视图间切换 - AngularJS路由解析</a></li>
+<li><a href="http://my.oschina.net/tommyfok/blog/348259" target="_blank" rel="external">AngularJS SEO 简易教程</a></li>
+</ul>
+
+                
+<p class="pink-link-context">
+    <a href="/2015/01/13/A Better Way to Learn AngularJS/" rel="next" title="A Better Way to Learn AngularJS">
+    上一篇：A Better Way to Learn AngularJS
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2014/12/31/2014年总结/" rel="next" title="2014年总结">
+    下一篇：2014年总结
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

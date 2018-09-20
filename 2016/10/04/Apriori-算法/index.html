@@ -1,0 +1,686 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Apriori 算法 | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="Apriori简介Apriori 算法可以说是经典的亲和性分析算法。它只从数据集中频繁出现的商品中选取共同出现的商品组成频繁项集 ( frequentitemset ),避免了上述复杂度呈指数级增长的问题。一旦找到频繁项集,生成关联规则就很容易了。Apriori 算法背后的原理简洁却不失巧妙。首先,确保了规则在数据集中有足够的支持度 。 Apriori 算法的一个重要参数就是最小支持度。比如,要生成包含商品 A 、 B 的频繁项集( A, B ),要求支持度至少为 30 ,那么 A 和 B 都必须至少在数据集中出现 30次。更大的频繁项集也要遵守该项约定,比如要生成频繁项集( A, B, C, D ),那么子集 (A, B, C) 必须是频繁项集(当然 D 自己也要满足最小支持度标准)。生成频繁项集 后,将不再考虑其他可能的却不够频繁的项集(这样的集合有很多),从而大大减少测试新规则所需的时间。其他亲和性分析算法有 Eclat 和频繁项集挖掘算法 ( FP-growth )。从数据挖掘角度看,这些算法比起基础的 Apriori 算法有很多改进,性能也有进一步提升。接下来,先来看一下最基础的 Apriori 算法。
+测试数据请下载 这里">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Apriori 算法"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/机器学习/">机器学习</a><a class="breadcrumb" href="/categories/机器学习/算法/">算法</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Apriori 算法</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-10-03T16:57:10.000Z"><a href="/2016/10/04/Apriori-算法/">2016-10-04</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/机器学习/" class="chip pink lighten-1">机器学习</a>
+        
+            <a href="/tags/算法/" class="chip pink lighten-1">算法</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Apriori简介"><span class="section table-of-contents-text">Apriori简介</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#稀疏矩阵"><span class="section table-of-contents-text">稀疏矩阵</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#代码如下"><span class="section table-of-contents-text">代码如下</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h3 id="Apriori简介"><a href="#Apriori简介" class="headerlink" title="Apriori简介"></a>Apriori简介</h3><p>Apriori 算法可以说是经典的亲和性分析算法。它只从数据集中频繁出现的商品中选取共同出现的商品组成频繁项集 ( frequent<br>itemset ),避免了上述复杂度呈指数级增长的问题。一旦找到频繁项集,生成关联规则就很容易了。<br>Apriori 算法背后的原理简洁却不失巧妙。首先,确保了规则在数据集中有足够的支持度 。 Apriori 算法的一个重要参数就是最小<br>支持度。比如,要生成包含商品 A 、 B 的频繁项集( A, B ),要求支持度至少为 30 ,那么 A 和 B 都必须至少在数据集中出现 30<br>次。更大的频繁项集也要遵守该项约定,比如要生成频繁项集( A, B, C, D ),那么子集 (A, B, C) 必须是频繁项集(当然 D 自己<br>也要满足最小支持度标准)。<br>生成频繁项集 后,将不再考虑其他可能的却不够频繁的项集(这样的集合有很多),从而大大减少测试新规则所需的时间。<br>其他亲和性分析算法有 Eclat 和频繁项集挖掘算法 ( FP-growth )。从数据挖掘角度看,这些算法比起基础的 Apriori 算法有很多<br>改进,性能也有进一步提升。接下来,先来看一下最基础的 Apriori 算法。</p>
+<p>测试数据请下载 <a href="http://files.grouplens.org/datasets/movielens/ml-100k.zip" target="_blank" rel="external">这里</a><br><a id="more"></a></p>
+<h3 id="稀疏矩阵"><a href="#稀疏矩阵" class="headerlink" title="稀疏矩阵"></a>稀疏矩阵</h3><p>很显然, 数据具有稀疏性. 数据集中有1000名用户和1700部电影, 意味着整个矩阵很大. 将矩阵读到内存中及在它基础上进行计算可能存在难度。然而,这个矩阵的很多格子都是空的,也就是对大部分用户来说,他们只给少数几部电影打过分。比如用户<em>213</em>没有为电影 <em>675</em> 打过分,大部分用户没有为大部分电影打过分。</p>
+<p>任何没有出现在数据集中的用户和电影组合表示它们实际上是不存在的。这比起在内存中保存大量的0, 节省了很多空间。这<br>种格式叫作<strong>稀疏矩阵</strong> (sparse matrix)。根据经验来说,如果数据集中60%或以上的数据为0, 就应该考虑使用稀疏矩阵, 从而<br>节省不少空间。</p>
+<p>在对稀疏矩阵进行计算时,我们关注的通常不是那些不存在的数据,不会去比较众多的0值, 相反我们关注的是现有数据, 并对它们进行比较。</p>
+<h3 id="代码如下"><a href="#代码如下" class="headerlink" title="代码如下"></a>代码如下</h3><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</div><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line"></div><div class="line">ratings_filename = os.path.join(<span class="string">'../data/ml-100k'</span>, <span class="string">"u.data"</span>)</div><div class="line">all_ratings = pd.read_csv(</div><div class="line">    ratings_filename,</div><div class="line">    sep=<span class="string">"\t"</span>,</div><div class="line">    header=<span class="keyword">None</span>,</div><div class="line">    names=[<span class="string">"UserID"</span>, <span class="string">"MovieID"</span>, <span class="string">"Rating"</span>, <span class="string">"Datetime"</span>]</div><div class="line">)</div><div class="line"><span class="comment"># 解析时间戳</span></div><div class="line">all_ratings[<span class="string">"Datetime"</span>] = pd.to_datetime(</div><div class="line">    all_ratings[<span class="string">'Datetime'</span>], unit=<span class="string">'s'</span>)</div><div class="line"></div><div class="line"><span class="comment"># 添加列'Favorable', 表示是否喜欢</span></div><div class="line"><span class="comment"># 从数据集中选取一部分数据用作训练集,这能有效减少搜索空间. 取前 200 名用户的打分数据</span></div><div class="line">all_ratings[<span class="string">"Favorable"</span>] = all_ratings[<span class="string">"Rating"</span>] &gt; <span class="number">3</span>  </div><div class="line">ratings = all_ratings[all_ratings[<span class="string">'UserID'</span>].isin(range(<span class="number">200</span>))]</div><div class="line"><span class="comment"># 新建一个数据集,只包括用户喜欢某部电影的数据行</span></div><div class="line">favorable_ratings = ratings[ratings[<span class="string">"Favorable"</span>]]</div><div class="line">favorable_reviews_by_users = dict(</div><div class="line">    (</div><div class="line">        k, frozenset(v.values)</div><div class="line">    ) <span class="keyword">for</span> k, v <span class="keyword">in</span> favorable_ratings.groupby(<span class="string">"UserID"</span>)[<span class="string">"MovieID"</span>])</div><div class="line"></div><div class="line"><span class="comment"># 在生成项集时, 需要搜索用户喜欢的电影。</span></div><div class="line"><span class="comment"># 因此, 需要知道每个用户各喜欢哪些电影,</span></div><div class="line"><span class="comment"># 按照UserID进行分组, 并遍历每个用户看过的每一部电影(frozenset比列表的操作更快)</span></div><div class="line"></div><div class="line"><span class="comment"># 创建一个数据框,以便了解每部电影的影迷数量</span></div><div class="line">num_favorable_by_movie = ratings[[<span class="string">"MovieID"</span>, <span class="string">"Favorable"</span>]].groupby(</div><div class="line">    <span class="string">"MovieID"</span>).sum()</div><div class="line"></div><div class="line"><span class="comment"># 查看最受欢迎的五部电影</span></div><div class="line">num_favorable_by_movie.sort_values(<span class="string">"Favorable"</span>, ascending=<span class="keyword">False</span>)[</div><div class="line">    :<span class="number">5</span>]  </div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_frequent_itemsets</span><span class="params">(</span></span></div><div class="line">        favorable_reviews_by_users, k_1_itemsets, min_support):</div><div class="line">    counts = defaultdict(int)</div><div class="line">    <span class="keyword">for</span> user, reviews <span class="keyword">in</span> favorable_reviews_by_users.items():</div><div class="line">        <span class="keyword">for</span> itemset <span class="keyword">in</span> k_1_itemsets:</div><div class="line">            <span class="keyword">if</span> itemset.issubset(reviews):</div><div class="line">                <span class="keyword">for</span> other_reviewed_movie <span class="keyword">in</span> reviews - itemset:</div><div class="line">                    current_superset = itemset | frozenset(</div><div class="line">                        (other_reviewed_movie,))</div><div class="line">                    counts[current_superset] += <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> dict(</div><div class="line">        [</div><div class="line">            (itemset, frequency) <span class="keyword">for</span> itemset, frequency <span class="keyword">in</span> counts.items(</div><div class="line">            ) <span class="keyword">if</span> frequency &gt;= min_support</div><div class="line">        ]</div><div class="line">    )</div><div class="line"></div><div class="line"><span class="comment"># 频繁项集字典, 便于长度查找</span></div><div class="line">frequent_itemsets = &#123;&#125;</div><div class="line">min_support = <span class="number">50</span></div><div class="line"></div><div class="line">frequent_itemsets[<span class="number">1</span>] = dict(</div><div class="line">    (</div><div class="line">        frozenset(</div><div class="line">            (movie_id,)</div><div class="line">        ),</div><div class="line">        row[<span class="string">"Favorable"</span>]</div><div class="line">    ) <span class="keyword">for</span> movie_id, row <span class="keyword">in</span> num_favorable_by_movie.iterrows(</div><div class="line">    ) <span class="keyword">if</span> row[<span class="string">"Favorable"</span>] &gt; min_support</div><div class="line">)</div><div class="line"></div><div class="line">print(<span class="string">u"共有&#123;&#125;电影有超过&#123;&#125;喜欢标注"</span>.format(len(frequent_itemsets[<span class="number">1</span>]), min_support))</div><div class="line"></div><div class="line"><span class="comment"># 创建循环, 运行Apriori算法,存储算法运行过程中发现的新项集</span></div><div class="line"><span class="comment"># 循环体中, k表示即将发现的频繁项集的长度,</span></div><div class="line"><span class="comment"># 用键k-1可以从 frequent_itemsets字典中获取刚发现的频繁项集.</span></div><div class="line"><span class="comment"># 新发现的频繁项集以长度为键,将其保存到字典中</span></div><div class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">20</span>):</div><div class="line">    cur_frequent_itemsets = find_frequent_itemsets(</div><div class="line">        favorable_reviews_by_users,</div><div class="line">        frequent_itemsets[k - <span class="number">1</span>],</div><div class="line">        min_support</div><div class="line">    )</div><div class="line">    <span class="keyword">if</span> len(cur_frequent_itemsets) == <span class="number">0</span>:</div><div class="line">        print(<span class="string">u"未找到长度为&#123;&#125;的频繁项集"</span>.format(k))</div><div class="line">        <span class="keyword">break</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        print(<span class="string">u"共找到&#123;&#125;条频繁项集对应于长度&#123;&#125;"</span>.format(</div><div class="line">            len(cur_frequent_itemsets), k))</div><div class="line">        frequent_itemsets[k] = cur_frequent_itemsets</div><div class="line"></div><div class="line"><span class="keyword">del</span> frequent_itemsets[<span class="number">1</span>]</div><div class="line"></div><div class="line"><span class="comment"># 从频繁项集中抽取出关联规则,把其中几部电影作为前提,</span></div><div class="line"><span class="comment"># 另一部电影作为结论组成如下形式的规则:如果用户喜欢前提中的所有电影,那么他们也会喜欢结论中的电影</span></div><div class="line">candidate_rules = []</div><div class="line"><span class="keyword">for</span> itemset_length, itemset_counts <span class="keyword">in</span> frequent_itemsets.items():</div><div class="line">    <span class="keyword">for</span> itemset <span class="keyword">in</span> itemset_counts.keys():</div><div class="line">        <span class="keyword">for</span> conclusion <span class="keyword">in</span> itemset:</div><div class="line">            premise = itemset - set((conclusion,))</div><div class="line">            candidate_rules.append((premise, conclusion))</div><div class="line">print(<span class="string">u"共有&#123;&#125;候选规则"</span>.format(len(candidate_rules)))</div><div class="line"></div><div class="line"><span class="comment"># 计算每条规则的置信度</span></div><div class="line">correct_counts = defaultdict(int)</div><div class="line">incorrect_counts = defaultdict(int)</div><div class="line"><span class="keyword">for</span> user, reviews <span class="keyword">in</span> favorable_reviews_by_users.items():</div><div class="line">    <span class="keyword">for</span> candidate_rule <span class="keyword">in</span> candidate_rules:</div><div class="line">        premise, conclusion = candidate_rule</div><div class="line">        <span class="keyword">if</span> premise.issubset(reviews):</div><div class="line">            <span class="keyword">if</span> conclusion <span class="keyword">in</span> reviews:</div><div class="line">                correct_counts[candidate_rule] += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                incorrect_counts[candidate_rule] += <span class="number">1</span></div><div class="line">rule_confidence = &#123;</div><div class="line">    candidate_rule: correct_counts[</div><div class="line">        candidate_rule] / float(</div><div class="line">            correct_counts[</div><div class="line">                candidate_rule</div><div class="line">            ] + incorrect_counts[</div><div class="line">                candidate_rule]</div><div class="line">    ) <span class="keyword">for</span> candidate_rule <span class="keyword">in</span> candidate_rules</div><div class="line">&#125;</div><div class="line"></div><div class="line">sorted_confidence = sorted(</div><div class="line">    rule_confidence.items(),</div><div class="line">    key=itemgetter(<span class="number">1</span>),</div><div class="line">    reverse=<span class="keyword">True</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="comment"># 显示电影名称</span></div><div class="line">movie_name_filename = os.path.join(<span class="string">'../data/ml-100k'</span>, <span class="string">"u.item"</span>)</div><div class="line">movie_name_data = pd.read_csv(</div><div class="line">    movie_name_filename,</div><div class="line">    sep=<span class="string">"|"</span>,</div><div class="line">    header=<span class="keyword">None</span>,</div><div class="line">    encoding=<span class="string">"mac-roman"</span></div><div class="line">)</div><div class="line">movie_name_data.columns = [</div><div class="line">    <span class="string">"MovieID"</span>, <span class="string">"Title"</span>, <span class="string">"Release Date"</span>, <span class="string">"Video Release"</span>,</div><div class="line">    <span class="string">"IMDB"</span>, <span class="string">"&lt;UNK&gt;"</span>, <span class="string">"Action"</span>, <span class="string">"Adventure"</span>,</div><div class="line">    <span class="string">"Animation"</span>, <span class="string">"Children's"</span>, <span class="string">"Comedy"</span>, <span class="string">"Crime"</span>,</div><div class="line">    <span class="string">"Documentary"</span>, <span class="string">"Drama"</span>, <span class="string">"Fantasy"</span>, <span class="string">"Film-Noir"</span>,</div><div class="line">    <span class="string">"Horror"</span>, <span class="string">"Musical"</span>, <span class="string">"Mystery"</span>, <span class="string">"Romance"</span>,</div><div class="line">    <span class="string">"Sci-Fi"</span>, <span class="string">"Thriller"</span>, <span class="string">"War"</span>, <span class="string">"Western"</span></div><div class="line">]</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_movie_name</span><span class="params">(movie_id)</span>:</span></div><div class="line">    title_object = movie_name_data[</div><div class="line">        movie_name_data[<span class="string">"MovieID"</span>] == movie_id][<span class="string">"Title"</span>]</div><div class="line">    title = title_object.values[<span class="number">0</span>]</div><div class="line">    <span class="keyword">return</span> title</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">    print(<span class="string">u"规则 #&#123;0&#125;"</span>.format(index + <span class="number">1</span>))</div><div class="line">    (premise, conclusion) = sorted_confidence[index][<span class="number">0</span>]</div><div class="line">    premise_names = <span class="string">", "</span>.join(get_movie_name(idx) <span class="keyword">for</span> idx <span class="keyword">in</span> premise)</div><div class="line">    conclusion_name = get_movie_name(conclusion)</div><div class="line">    print(</div><div class="line">        <span class="string">u"-规则: 如果某人喜欢&#123;0&#125;他们也会喜欢&#123;1&#125;"</span></div><div class="line">        .format(premise_names, conclusion_name))</div><div class="line">    print(</div><div class="line">        <span class="string">u"-置信度: &#123;0:.3f&#125;"</span>.format(</div><div class="line">            rule_confidence[(premise, conclusion)]))</div><div class="line">    print(<span class="string">""</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 测试</span></div><div class="line">test_dataset = all_ratings[~all_ratings[<span class="string">'UserID'</span>].isin(range(<span class="number">200</span>))]</div><div class="line">test_favorable = test_dataset[test_dataset[<span class="string">"Favorable"</span>]]</div><div class="line">test_favorable_by_users = dict(</div><div class="line">    (</div><div class="line">        k,</div><div class="line">        frozenset(v.values)</div><div class="line">    ) <span class="keyword">for</span> k, v <span class="keyword">in</span> test_favorable.groupby(<span class="string">"UserID"</span>)[<span class="string">"MovieID"</span>]</div><div class="line">)</div><div class="line">correct_counts = defaultdict(int)</div><div class="line">incorrect_counts = defaultdict(int)</div><div class="line"><span class="keyword">for</span> user, reviews <span class="keyword">in</span> test_favorable_by_users.items():</div><div class="line">    <span class="keyword">for</span> candidate_rule <span class="keyword">in</span> candidate_rules:</div><div class="line">        premise, conclusion = candidate_rule</div><div class="line">        <span class="keyword">if</span> premise.issubset(reviews):</div><div class="line">            <span class="keyword">if</span> conclusion <span class="keyword">in</span> reviews:</div><div class="line">                correct_counts[candidate_rule] += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                incorrect_counts[candidate_rule] += <span class="number">1</span></div><div class="line"></div><div class="line">test_confidence = &#123;</div><div class="line">    candidate_rule: correct_counts[</div><div class="line">        candidate_rule] / float(</div><div class="line">        correct_counts[</div><div class="line">            candidate_rule] + incorrect_counts[</div><div class="line">            candidate_rule]) <span class="keyword">for</span> candidate_rule <span class="keyword">in</span> rule_confidence&#125;</div><div class="line">sorted_test_confidence = sorted(</div><div class="line">    test_confidence.items(),</div><div class="line">    key=itemgetter(<span class="number">1</span>),</div><div class="line">    reverse=<span class="keyword">True</span></div><div class="line">)</div><div class="line">print(sorted_test_confidence[:<span class="number">5</span>])</div><div class="line"></div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    print(<span class="string">u"规则 #&#123;0&#125;"</span>.format(index + <span class="number">1</span>))</div><div class="line">    premise, conclusion = sorted_confidence[index][<span class="number">0</span>]</div><div class="line">    premise_names = <span class="string">", "</span>.join(get_movie_name(idx) <span class="keyword">for</span> idx <span class="keyword">in</span> premise)</div><div class="line">    conclusion_name = get_movie_name(conclusion)</div><div class="line">    print(<span class="string">u"规则: 如果某人喜欢&#123;0&#125;, 他们也会喜欢&#123;1&#125;"</span>.format(</div><div class="line">        premise_names, conclusion_name))</div><div class="line">    print(<span class="string">u"- 训练集: &#123;0:.3f&#125;"</span>.format(</div><div class="line">        rule_confidence.get((premise, conclusion), <span class="number">-1</span>)))</div><div class="line">    print(<span class="string">u"- 测试集: &#123;0:.3f&#125;"</span>.format(</div><div class="line">        test_confidence.get((premise, conclusion), <span class="number">-1</span>)))</div><div class="line">    print(<span class="string">""</span>)</div></pre></td></tr></table></figure>
+
+                
+<p class="pink-link-context">
+    <a href="/2017/01/15/2017总结年/" rel="next" title="2017年总结">
+    上一篇：2017年总结
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2016/10/03/余弦相似度算法/" rel="next" title="余弦相似度算法">
+    下一篇：余弦相似度算法
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

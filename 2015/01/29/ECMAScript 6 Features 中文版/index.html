@@ -1,0 +1,763 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>ECMAScript 6 Features 中文版 | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="ECMAScript 6 Features 中文版第一遍粗译，词不达意，欢迎提 issue
+采用中英混排的方式进行译制，如不解请查看对应原文
+本文档将与原作者的 文档 保持同步更新，欢迎关注
+Introduction 简介ECMAScript 6 is the upcoming version of the ECMAScript standard. This standard is targeting ratification in June 2015. ES6 is a significant update to the language, and the first update to the language since ES5 was standardized in 2009. Implementation of these features in major JavaScript engines is underway now.
+ECMAScript 6 是 ECMAScript 的下一代标准，预计将在 2015年6月 正式发布。ES6 的发布将是是这门语言自 2009 年 ES5 正式发布以来的首次更新，是一次富有意义的更新。Javascript核心引擎的新特性仍然在快速开发中。
+See the draft ES6 standard for full specification of the ECMAScript 6 language.
+这里有ES6标准草案的所有细节可以参考
+ES6 includes the following new features:">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="ECMAScript 6 Features 中文版"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Javascript/">Javascript</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>ECMAScript 6 Features 中文版</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2015-01-29T02:19:10.000Z"><a href="/2015/01/29/ECMAScript 6 Features 中文版/">2015-01-29</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Javascript/" class="chip pink lighten-1">Javascript</a>
+        
+            <a href="/tags/ECMAScript/" class="chip pink lighten-1">ECMAScript</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#ECMAScript-6-Features-中文版"><span class="section table-of-contents-text">ECMAScript 6 Features 中文版</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Introduction-简介"><span class="section table-of-contents-text">Introduction 简介</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#ECMAScript-6-Features-特性"><span class="section table-of-contents-text">ECMAScript 6 Features 特性</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Arrows-箭头函数"><span class="section table-of-contents-text">Arrows 箭头函数</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Classes-类"><span class="section table-of-contents-text">Classes 类</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Enhanced-Object-Literals-增强的Object字面量"><span class="section table-of-contents-text">Enhanced Object Literals 增强的Object字面量</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Template-Strings-模板字符串"><span class="section table-of-contents-text">Template Strings 模板字符串</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Destructuring-解构"><span class="section table-of-contents-text">Destructuring 解构</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Default-Rest-Spread-默认值-多余参数组合-参数伸展"><span class="section table-of-contents-text">Default + Rest + Spread  默认值+多余参数组合+参数伸展</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Let-Const-操作符"><span class="section table-of-contents-text">Let + Const 操作符</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Iterators-For-Of-迭代器-For-of-循环"><span class="section table-of-contents-text">Iterators + For..Of 迭代器 + For..of 循环</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Generators-生成器"><span class="section table-of-contents-text">Generators 生成器</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Unicode-统一码"><span class="section table-of-contents-text">Unicode 统一码</span></a></li></ol></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="ECMAScript-6-Features-中文版"><a href="#ECMAScript-6-Features-中文版" class="headerlink" title="ECMAScript 6 Features 中文版"></a>ECMAScript 6 Features 中文版</h1><p>第一遍粗译，词不达意，欢迎提 issue</p>
+<p>采用中英混排的方式进行译制，如不解请查看对应原文</p>
+<p><strong>本文档将与原作者的 <a href="https://github.com/lukehoban/es6features" target="_blank" rel="external">文档</a> 保持同步更新，欢迎关注</strong></p>
+<h2 id="Introduction-简介"><a href="#Introduction-简介" class="headerlink" title="Introduction 简介"></a>Introduction 简介</h2><p>ECMAScript 6 is the upcoming version of the ECMAScript standard. This standard is targeting ratification in June 2015. ES6 is a significant update to the language, and the first update to the language since ES5 was standardized in 2009. Implementation of these features in major JavaScript engines is <a href="http://kangax.github.io/es5-compat-table/es6/" target="_blank" rel="external">underway now</a>.</p>
+<p>ECMAScript 6 是 ECMAScript 的下一代标准，预计将在 2015年6月 正式发布。ES6 的发布将是是这门语言自 2009 年 ES5 正式发布以来的首次更新，是一次富有意义的更新。Javascript核心引擎的<a href="http://kangax.github.io/es5-compat-table/es6/" target="_blank" rel="external">新特性</a>仍然在快速开发中。</p>
+<p>See the <a href="https://people.mozilla.org/~jorendorff/es6-draft.html" target="_blank" rel="external">draft ES6 standard</a> for full specification of the ECMAScript 6 language.</p>
+<p>这里有<a href="https://people.mozilla.org/~jorendorff/es6-draft.html" target="_blank" rel="external">ES6标准草案</a>的所有细节可以参考</p>
+<p>ES6 includes the following new features:<br><a id="more"></a><br>ES6 的具体特性如下：</p>
+<ul>
+<li><a href="#arrows-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0">Arrows 箭头函数</a></li>
+<li><a href="#classes-%E7%B1%BB">classes 类</a></li>
+<li><a href="#enhanced-object-literals-%E5%A2%9E%E5%BC%BA%E7%9A%84object%E5%AD%97%E9%9D%A2%E9%87%8F">enhanced object literals 增强的对象字面量</a></li>
+<li><a href="#template-strings-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2">template strings 模板字符串</a></li>
+<li><a href="#destructuring-%E8%A7%A3%E6%9E%84">destructuring 解构</a></li>
+<li><a href="#default--rest--spread--%E9%BB%98%E8%AE%A4%E5%80%BC%E5%A4%9A%E4%BD%99%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88%E5%8F%82%E6%95%B0%E4%BC%B8%E5%B1%95">default + rest + spread 默认值+多余参数组合+参数伸展</a></li>
+<li><a href="#let--const-%E6%93%8D%E4%BD%9C%E7%AC%A6">let + const let + const 操作符</a></li>
+<li><a href="#iterators--forof-%E8%BF%AD%E4%BB%A3%E5%99%A8--forof-%E5%BE%AA%E7%8E%AF">iterators + for..of 迭代器 + for…of</a></li>
+<li><a href="#generators-%E7%94%9F%E6%88%90%E5%99%A8">generators 生成器</a></li>
+<li><a href="#unicode-%E7%BB%9F%E4%B8%80%E7%A0%81">unicode 统一码</a></li>
+<li><a href="#modules-%E6%A8%A1%E5%9D%97">modules 模块</a></li>
+<li><a href="#module-loaders-%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E5%99%A8">module loaders 模块加载器</a></li>
+<li><a href="#map--set--weakmap--weakset-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">map + set + weakmap + weakset 数据结构</a></li>
+<li><a href="#proxies-%E4%BB%A3%E7%90%86">proxies 代理</a></li>
+<li><a href="#symbols-%E7%AC%A6%E5%8F%B7">symbols 符号</a></li>
+<li><a href="#subclassable-built-ins-%E5%8F%AF%E5%AD%90%E7%B1%BB%E5%8C%96%E7%9A%84%E5%86%85%E5%BB%BA%E5%AF%B9%E8%B1%A1">subclassable built-ins 可子类化内建对象</a></li>
+<li><a href="#promises-%E5%AF%B9%E8%B1%A1">promises 对象</a></li>
+<li><a href="#math--number--string--object-apis-%E6%89%A9%E5%B1%95">math + number + string + object APIs</a></li>
+<li><a href="#binary-and-octal-literals-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%92%8C%E5%85%AB%E8%BF%9B%E5%88%B6%E5%AD%97%E9%9D%A2%E9%87%8F">binary and octal literals 二进制和八进制字面量</a></li>
+<li><a href="#reflect-api-%E5%8F%8D%E5%B0%84api">reflect api 反射API</a></li>
+<li><a href="#tail-calls-%E5%B0%BE%E8%B0%83%E7%94%A8">tail calls 尾调用</a></li>
+</ul>
+<h2 id="ECMAScript-6-Features-特性"><a href="#ECMAScript-6-Features-特性" class="headerlink" title="ECMAScript 6 Features 特性"></a>ECMAScript 6 Features 特性</h2><h3 id="Arrows-箭头函数"><a href="#Arrows-箭头函数" class="headerlink" title="Arrows 箭头函数"></a>Arrows 箭头函数</h3><p>Arrows are a function shorthand using the <code>=&gt;</code> syntax. They are syntactically similar to the related feature in C#, Java 8 and CoffeeScript. They support both expression and statement bodies. Unlike functions, arrows share the same lexical this as their surrounding code.</p>
+<p>箭头函数是形如<code>=&gt;</code>的函数简写形式，在语法上与 C#、Java 8 和 CoffeScript 非常相似，它们同时支持表达式和语句体，与function定义的函数所不同的是，箭头函数在上下文中共享相同的关键字<code>this</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Expression bodies</span></div><div class="line"><span class="comment">// 表达式</span></div><div class="line"><span class="keyword">var</span> odds = evens.map(v =&gt; v + <span class="number">1</span>);</div><div class="line"><span class="keyword">var</span> nums = evens.map((v, i) =&gt; v + i);</div><div class="line"><span class="keyword">var</span> pairs = evens.map(v =&gt; (&#123;even: v, odd: v + <span class="number">1</span>&#125;));</div><div class="line"></div><div class="line"><span class="comment">// Statement bodies</span></div><div class="line"><span class="comment">// 语句体</span></div><div class="line">nums.forEach(v =&gt; &#123;</div><div class="line">  <span class="keyword">if</span> (v % <span class="number">5</span> === <span class="number">0</span>)</div><div class="line">    fives.push(v);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Lexical this</span></div><div class="line"><span class="comment">// this 关键字</span></div><div class="line"><span class="keyword">var</span> bob = &#123;</div><div class="line">  _name: <span class="string">"Bob"</span>,</div><div class="line">  _friends: [<span class="string">"Amy"</span>, <span class="string">"Bob"</span>, <span class="string">"Cinne"</span>, <span class="string">"Dylan"</span>, <span class="string">"Ellen"</span>],</div><div class="line">  printFriends() &#123;</div><div class="line">    <span class="keyword">this</span>._friends.forEach(f =&gt;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>._name + <span class="string">" knows "</span> + f));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Classes-类"><a href="#Classes-类" class="headerlink" title="Classes 类"></a>Classes 类</h3><p>ES6 classes are a simple sugar over the prototype-based OO pattern. Having a single convenient declarative form makes class patterns easier to use, and encourages interoperability. Classes support prototype-based inheritance, super calls, instance and static methods and constructors.</p>
+<p>ES6 的类是基于原型的面向对象模式的一个简单的语法糖，它有一个便捷的声明形式，并鼓励互操作性，这使得类模式更容易使用。class定义的类支持基于原型的继承、<a href="http://en.wikipedia.org/wiki/Call_super" target="_blank" rel="external">SuperCalls</a>、实例和静态方法以及构造函数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SkinnedMesh</span> <span class="keyword">extends</span> <span class="title">THREE</span>.<span class="title">Mesh</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(geometry, materials) &#123;</div><div class="line">    <span class="keyword">super</span>(geometry, materials);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.idMatrix = SkinnedMesh.defaultMatrix();</div><div class="line">    <span class="keyword">this</span>.bones = [];</div><div class="line">    <span class="keyword">this</span>.boneMatrices = [];</div><div class="line">    <span class="comment">//...</span></div><div class="line">  &#125;</div><div class="line">  update(camera) &#123;</div><div class="line">    <span class="comment">//...</span></div><div class="line">    <span class="keyword">super</span>.update();</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">static</span> defaultMatrix() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> THREE.Matrix4();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Enhanced-Object-Literals-增强的Object字面量"><a href="#Enhanced-Object-Literals-增强的Object字面量" class="headerlink" title="Enhanced Object Literals 增强的Object字面量"></a>Enhanced Object Literals 增强的Object字面量</h3><p>Object literals are extended to support setting the prototype at construction, shorthand for foo: foo assignments, defining methods, making super calls, and computing property names with expressions. Together, these also bring object literals and class declarations closer together, and let object-based design benefit from some of the same conveniences.</p>
+<p>Object字面量被扩展以支持以下特性：在构建的时候设置原型、<code>foo: foo</code>的简写形式赋值、定义方法、调用<a href="http://en.wikipedia.org/wiki/Call_super" target="_blank" rel="external">Super Calls</a>、计算表达式的属性名称等。这样就使得Object字面量和类的声明的联系更加紧密，使得基于对象的设计更加便利</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    <span class="comment">// __proto__</span></div><div class="line">    __proto__: theProtoObj,</div><div class="line">    <span class="comment">// Shorthand for ‘handler: handler’</span></div><div class="line">    <span class="comment">// ‘handler: handler’ 的简写形式</span></div><div class="line">    handler,</div><div class="line">    <span class="comment">// Methods</span></div><div class="line">    toString() &#123;</div><div class="line">      <span class="comment">// Super calls</span></div><div class="line">      <span class="keyword">return</span> <span class="string">"d "</span> + <span class="keyword">super</span>.toString();</div><div class="line">    &#125;,</div><div class="line">    <span class="comment">// Computed (dynamic) property names</span></div><div class="line">    <span class="comment">// 动态计算属性名称</span></div><div class="line">    [ <span class="string">'prop_'</span> + (() =&gt; <span class="number">42</span>)() ]: <span class="number">42</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Template-Strings-模板字符串"><a href="#Template-Strings-模板字符串" class="headerlink" title="Template Strings 模板字符串"></a>Template Strings 模板字符串</h3><p>Template strings provide syntactic sugar for constructing strings. This is similar to string interpolation features in Perl, Python and more. Optionally, a tag can be added to allow the string construction to be customized, avoiding injection attacks or constructing higher level data structures from string contents.</p>
+<p>模板字符串提供构造字符串的语法糖，这与Perl、Python等许多语言中的字符串插值功能非常相似，你也可以通过添加标签(tag)来自定义构造字符串，避免注入攻击，或者基于字符串构建更高层次的数据结构。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// Basic literal string creation</span></div><div class="line"><span class="comment">// 基础字符串字面量的创建</span></div><div class="line"><span class="string">`In JavaScript '\n' is a line-feed.`</span></div><div class="line"></div><div class="line"><span class="comment">// Multiline strings</span></div><div class="line"><span class="comment">// 多行字符串</span></div><div class="line"><span class="string">`In JavaScript this is</span></div><div class="line"> not legal.`</div><div class="line"></div><div class="line"> <span class="comment">// String interpolation</span></div><div class="line"><span class="comment">// 字符串插值</span></div><div class="line"><span class="keyword">var</span> name = <span class="string">"Bob"</span>, time = <span class="string">"today"</span>;</div><div class="line"><span class="string">`Hello <span class="subst">$&#123;name&#125;</span>, how are you <span class="subst">$&#123;time&#125;</span>?`</span></div><div class="line"></div><div class="line"><span class="comment">// Construct an HTTP request prefix is used to interpret the replacements and construction</span></div><div class="line"><span class="comment">// 构造一个HTTP请求前缀用来解释替换和构造，大意就是可以构造一个通用的HTTP prefix并通过赋值生成最终的HTTP请求</span></div><div class="line">GET<span class="string">`http://foo.org/bar?a=<span class="subst">$&#123;a&#125;</span>&amp;b=<span class="subst">$&#123;b&#125;</span></span></div><div class="line">    Content-Type: application/json</div><div class="line">    X-Credentials: <span class="subst">$&#123;credentials&#125;</span></div><div class="line">    &#123; "foo": <span class="subst">$&#123;foo&#125;</span>,</div><div class="line">      "bar": <span class="subst">$&#123;bar&#125;</span>&#125;`(myOnReadyStateChangeHandler);</div></pre></td></tr></table></figure>
+<h3 id="Destructuring-解构"><a href="#Destructuring-解构" class="headerlink" title="Destructuring 解构"></a>Destructuring 解构</h3><p>Destructuring allows binding using pattern matching, with support for matching arrays and objects.  Destructuring is fail-soft, similar to standard object lookup <code>foo[&quot;bar&quot;]</code>, producing <code>undefined</code> values when not found.</p>
+<p>解构允许结合使用模式匹配，支持匹配数组和对象，解构支持<a href="http://www.computerhope.com/jargon/f/failsoft.htm" target="_blank" rel="external">失效弱化</a>，与标准的对象查询<code>foo[&quot;bar&quot;]</code>相似，当查询无结果时生成<code>undefined</code>值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// list matching</span></div><div class="line"><span class="comment">// 列表匹配</span></div><div class="line"><span class="keyword">var</span> [a, , b] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</div><div class="line"></div><div class="line"><span class="comment">// object matching</span></div><div class="line"><span class="comment">// 对象匹配</span></div><div class="line"><span class="keyword">var</span> &#123; op: a, lhs: &#123; op: b &#125;, rhs: c &#125;</div><div class="line">       = getASTNode()</div><div class="line"></div><div class="line"><span class="comment">// object matching shorthand</span></div><div class="line"><span class="comment">// binds `op`, `lhs` and `rhs` in scope</span></div><div class="line"><span class="comment">// 对象匹配简写形式</span></div><div class="line"><span class="keyword">var</span> &#123;op, lhs, rhs&#125; = getASTNode()</div><div class="line"></div><div class="line"><span class="comment">// 上面作者给的示例看得云里雾里的，这里我再给出一个</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">today</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> &#123; d: <span class="number">2</span>, m: <span class="number">3</span>, y: <span class="number">2015</span> &#125;; &#125;</div><div class="line"><span class="keyword">var</span> &#123; m: month, y: year &#125; = today(); <span class="comment">// month = 3, year = 2015</span></div><div class="line"></div><div class="line"><span class="comment">// Can be used in parameter position</span></div><div class="line"><span class="comment">// 也可以作为参数使用</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span>(<span class="params">&#123;name: x&#125;</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(x);</div><div class="line">&#125;</div><div class="line">g(&#123;name: <span class="number">5</span>&#125;)</div><div class="line"></div><div class="line"><span class="comment">// Fail-soft destructuring</span></div><div class="line"><span class="comment">// 失效弱化解构，结果查询不到时定义为 undefined</span></div><div class="line"><span class="keyword">var</span> [a] = [];</div><div class="line">a === <span class="literal">undefined</span>;</div><div class="line"></div><div class="line"><span class="comment">// Fail-soft destructuring with defaults</span></div><div class="line"><span class="comment">// 具备默认值的失效弱化解构</span></div><div class="line"><span class="keyword">var</span> [a = <span class="number">1</span>] = [];</div><div class="line">a === <span class="number">1</span>;</div></pre></td></tr></table></figure>
+<h3 id="Default-Rest-Spread-默认值-多余参数组合-参数伸展"><a href="#Default-Rest-Spread-默认值-多余参数组合-参数伸展" class="headerlink" title="Default + Rest + Spread  默认值+多余参数组合+参数伸展"></a>Default + Rest + Spread  默认值+多余参数组合+参数伸展</h3><p>Callee-evaluated default parameter values.  Turn an array into consecutive arguments in a function call.  Bind trailing parameters to an array.  Rest replaces the need for <code>arguments</code> and addresses common cases more directly.</p>
+<p>本人英语烂，直译出来惨不忍睹，尝试意译一下，欢迎issue里给出直译参考（泪目</p>
+<ol>
+<li>首先，参数可以指定默认值</li>
+<li>其次，可以通过…运算符将尾随参数转换为一个数组</li>
+<li>最后，同样通过…运算符将作为参数的数组拆解为相应参数变量</li>
+</ol>
+<p>果真只能靠自己~早已被作者虐哭</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x, y=12</span>) </span>&#123;</div><div class="line">  <span class="comment">// y is 12 if not passed (or passed as undefined)</span></div><div class="line">  <span class="keyword">return</span> x + y;</div><div class="line">&#125;</div><div class="line">f(<span class="number">3</span>) == <span class="number">15</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x, ...y</span>) </span>&#123;</div><div class="line">  <span class="comment">// y is an Array</span></div><div class="line">  <span class="keyword">return</span> x * y.length;</div><div class="line">&#125;</div><div class="line">f(<span class="number">3</span>, <span class="string">"hello"</span>, <span class="literal">true</span>) == <span class="number">6</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x, y, z</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> x + y + z;</div><div class="line">&#125;</div><div class="line"><span class="comment">// Pass each elem of array as argument</span></div><div class="line">f(...[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) == <span class="number">6</span></div></pre></td></tr></table></figure>
+<h3 id="Let-Const-操作符"><a href="#Let-Const-操作符" class="headerlink" title="Let + Const 操作符"></a>Let + Const 操作符</h3><p>Block-scoped binding constructs.  <code>let</code> is the new <code>var</code>.  <code>const</code> is single-assignment.  Static restrictions prevent use before assignment.</p>
+<p>let 和 const 属于块级作用域的绑定构造，<code>let</code> 是新的 <code>var</code>，只在块级作用域内有效，<code>const</code> 是<a href="http://zh.wikipedia.org/zh-cn/%E9%9D%99%E6%80%81%E5%8D%95%E8%B5%8B%E5%80%BC%E5%BD%A2%E5%BC%8F" target="_blank" rel="external">单赋值</a>，声明的是块级作用域的常量，静态限制在赋值之前禁止使用</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  &#123;</div><div class="line">    <span class="keyword">let</span> x;</div><div class="line">    &#123;</div><div class="line">      <span class="comment">// okay, block scoped name</span></div><div class="line">      <span class="keyword">const</span> x = <span class="string">"sneaky"</span>;</div><div class="line">      <span class="comment">// error, const</span></div><div class="line">      x = <span class="string">"foo"</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// error, already declared in block</span></div><div class="line">    <span class="keyword">let</span> x = <span class="string">"inner"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Iterators-For-Of-迭代器-For-of-循环"><a href="#Iterators-For-Of-迭代器-For-of-循环" class="headerlink" title="Iterators + For..Of 迭代器 + For..of 循环"></a>Iterators + For..Of 迭代器 + For..of 循环</h3><p>Iterator objects enable custom iteration like CLR IEnumerable or Java Iterable.  Generalize <code>for..in</code> to custom iterator-based iteration with <code>for..of</code>.  Don’t require realizing an array, enabling lazy design patterns like LINQ.</p>
+<p>迭代器对象允许像 <a href="https://msdn.microsoft.com/zh-cn/library/system.collections.ienumerable(v=vs.110" target="_blank" rel="external">CLI IEnumerable</a>.aspx) 或者 <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html" target="_blank" rel="external">Java Iterable</a> 一样自定义迭代器。将<code>for..in</code>转换为自定义的基于迭代器的形如<code>for..of</code>的迭代，不需要实现一个数组，支持像 <a href="https://msdn.microsoft.com/zh-cn/library/bb397926.aspx" target="_blank" rel="external">LINQ</a> 一样的惰性设计模式<br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">let</span> fibonacci = &#123;</div><div class="line">  [<span class="built_in">Symbol</span>.iterator]() &#123;</div><div class="line">    <span class="keyword">let</span> pre = <span class="number">0</span>, cur = <span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      next() &#123;</div><div class="line">        [pre, cur] = [cur, pre + cur];</div><div class="line">        <span class="keyword">return</span> &#123; done: <span class="literal">false</span>, value: cur &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> n <span class="keyword">of</span> fibonacci) &#123;</div><div class="line">  <span class="comment">// truncate the sequence at 1000</span></div><div class="line">  <span class="keyword">if</span> (n &gt; <span class="number">1000</span>)</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">  <span class="built_in">console</span>.log(n);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Iteration is based on these duck-typed interfaces (using <a href="http://typescriptlang.org" target="_blank" rel="external">TypeScript</a> type syntax for exposition only):</p>
+<p>迭代器基于这些<a href="http://zh.wikipedia.org/zh/%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B" target="_blank" rel="external">鸭子类型的接口</a> (仅使用<a href="http://typescriptlang.org" target="_blank" rel="external">TypeScript</a> 类型的句法阐述问题)：<br><figure class="highlight typescript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">interface</span> IteratorResult &#123;</div><div class="line">  done: <span class="built_in">boolean</span>;</div><div class="line">  value: <span class="built_in">any</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">interface</span> Iterator &#123;</div><div class="line">  next(): IteratorResult;</div><div class="line">&#125;</div><div class="line"><span class="keyword">interface</span> Iterable &#123;</div><div class="line">  [Symbol.iterator](): Iterator</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Generators-生成器"><a href="#Generators-生成器" class="headerlink" title="Generators 生成器"></a>Generators 生成器</h3><p>Generators simplify iterator-authoring using <code>function*</code> and <code>yield</code>.  A function declared as function* returns a Generator instance.  Generators are subtypes of iterators which include additional  <code>next</code> and <code>throw</code>.  These enable values to flow back into the generator, so <code>yield</code> is an expression form which returns a value (or throws).</p>
+<p>生成器通过使用<code>function*</code>和<code>yield</code>简化迭代器的编写， 形如function*的函数声明返回一个生成器实例，生成器是迭代器的子类型，迭代器包括附加的<code>next</code>和<code>throw</code>，这使得值可以回流到生成器中，<code>yield</code>是一个返回或抛出一个值的表达式形式  。</p>
+<p>Note: Can also be used to enable ‘await’-like async programming, see also ES7 <code>await</code> proposal.<br>注意：也可以被用作类似‘await’一样的异步编程中，具体细节查看<a href="http://wiki.ecmascript.org/doku.php?id=strawman:async_functions" target="_blank" rel="external">ES7的<code>await</code>提案</a></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> fibonacci = &#123;</div><div class="line">  [<span class="built_in">Symbol</span>.iterator]: <span class="function"><span class="keyword">function</span>*(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> pre = <span class="number">0</span>, cur = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (;;) &#123;</div><div class="line">      <span class="keyword">var</span> temp = pre;</div><div class="line">      pre = cur;</div><div class="line">      cur += temp;</div><div class="line">      <span class="keyword">yield</span> cur;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> n <span class="keyword">of</span> fibonacci) &#123;</div><div class="line">  <span class="comment">// truncate the sequence at 1000</span></div><div class="line">  <span class="keyword">if</span> (n &gt; <span class="number">1000</span>)</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">  <span class="built_in">console</span>.log(n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The generator interface is (using <a href="http://typescriptlang.org" target="_blank" rel="external">TypeScript</a> type syntax for exposition only):<br>生成器接口如下(仅使用<a href="http://typescriptlang.org" target="_blank" rel="external">TypeScript</a> 类型的句法阐述问题)：</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">interface</span> Generator <span class="keyword">extends</span> Iterator &#123;</div><div class="line">    next(value?: <span class="built_in">any</span>): IteratorResult;</div><div class="line">    <span class="keyword">throw</span>(exception: <span class="built_in">any</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Unicode-统一码"><a href="#Unicode-统一码" class="headerlink" title="Unicode 统一码"></a>Unicode 统一码</h3><p>Non-breaking additions to support full Unicode, including new Unicode literal form in strings and new RegExp <code>u</code> mode to handle code points, as well as new APIs to process strings at the 21bit code points level.  These additions support building global apps in JavaScript.</p>
+<blockquote>
+<p>Non-breaking additions to support full Unicode</p>
+</blockquote>
+<p>这句看了半天不知道作者想要表达什么，我就查了下资料，有一种可能是： 增加<a href="http://zh.wikipedia.org/wiki/%E4%B8%8D%E6%8D%A2%E8%A1%8C%E7%A9%BA%E6%A0%BC" target="_blank" rel="external">不换行空格</a>的特性以全面支持Unicode，还有一种可能是：渐进增强地、非破坏性地全面支持Unicode，也就是说，新加入的特性并不影响老的代码的使用。我个人比较倾向于第二种解读。<a href="https://github.com/sumhat" target="_blank" rel="external">@sumhat</a>提示说第二种解读是正确的</p>
+<p>（续）字符串支持新的Unicode文本形式，也增加了新的正则表达式修饰符<code>u</code>来处理代码点，同时，新的API可以在<a href="http://zh.wikipedia.org/wiki/Unicode#.E7.BC.96.E7.A0.81.E6.96.B9.E5.BC.8F" target="_blank" rel="external">21bit代码点级别</a>上处理字符串，增加这些支持后可以使用 Javascript 构建全球化的应用。<br>注：关于Unicode推荐阅读<a href="http://www.blogjava.net/pts/archive/2009/07/20/287506.html" target="_blank" rel="external">复杂的Unicode，疑惑的Python</a></p>
+<p>```JavaScript<br>// same as ES5.1<br>// 与 ES5.1 相同<br>“</p>
+
+                
+<p class="pink-link-context">
+    <a href="/2015/02/12/不要在setting中import太多东西/" rel="next" title="不要在setting中import太多东西">
+    上一篇：不要在setting中import太多东西
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2015/01/29/python lambda教程/" rel="next" title="python lambda教程">
+    下一篇：python lambda教程
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

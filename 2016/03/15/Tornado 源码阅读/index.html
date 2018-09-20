@@ -1,0 +1,740 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Tornado 源码阅读 | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="Tornado 源码阅读准备开始学习django的文档和源代码了，先总结一下看tornado源码的收获，防止忘记。这里写的是tornadov1.2的代码，因为我看了一遍4.3版本，和1.2思路相差不大，只是utils更多了，1.2版本代码量少，更有利于理清思路。列出我们将会涉及到的文件:
+tree
+.
+├── httpserver.py
+├── httputil.py
+├── __init__.py
+├── ioloop.py
+├── iostream.py
+├── web.py
+自上而下 - 总体概览首先，我们来一张图，表明tornado整体的框架，但是并不涉及tornado中所有文件和类，只是其中一部分而已。">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Tornado 源码阅读"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Python/">Python</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Tornado 源码阅读</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-03-15T11:08:41.000Z"><a href="/2016/03/15/Tornado 源码阅读/">2016-03-15</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Python/" class="chip pink lighten-1">Python</a>
+        
+            <a href="/tags/Tornado/" class="chip pink lighten-1">Tornado</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Tornado-源码阅读"><span class="section table-of-contents-text">Tornado 源码阅读</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#自上而下-总体概览"><span class="section table-of-contents-text">自上而下 - 总体概览</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#从socket开始"><span class="section table-of-contents-text">从socket开始</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h3 id="Tornado-源码阅读"><a href="#Tornado-源码阅读" class="headerlink" title="Tornado 源码阅读"></a>Tornado 源码阅读</h3><p>准备开始学习django的文档和源代码了，先总结一下看tornado源码的收获，防止忘记。<br>这里写的是tornadov1.2的代码，因为我看了一遍4.3版本，和1.2思路相差不大，只是<br>utils更多了，1.2版本代码量少，更有利于理清思路。列出我们将会涉及到的文件:</p>
+<pre><code>tree
+.
+├── httpserver.py
+├── httputil.py
+├── __init__.py
+├── ioloop.py
+├── iostream.py
+├── web.py
+</code></pre><h3 id="自上而下-总体概览"><a href="#自上而下-总体概览" class="headerlink" title="自上而下 - 总体概览"></a>自上而下 - 总体概览</h3><p>首先，我们来一张图，表明tornado整体的框架，但是并不涉及tornado中所有文件和类，<br>只是其中一部分而已。</p>
+<a id="more"></a>
+<p>不太会画图，描述一下图片的意思吧：</p>
+<ul>
+<li><p>tornado是以IOLoop为核心的(虽然没有画在中间),<br><a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/ioloop.py#L43" target="_blank" rel="external">IOLoop</a><br>是对epoll, kqueue, select的一层包装，是异步的核心，相当于 python3.4 引入的<br><a href="https://docs.python.org/3/library/selectors.html#selectors.DefaultSelector" target="_blank" rel="external">DefaultSelector</a></p>
+</li>
+<li><p><a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/web.py#L987" target="_blank" rel="external">Application</a><br>是整个web应用的配置中心，配置一些东西比如 <code>secret_cookie</code> 等，其中还包括了<br>URL正则和对应的Handler 列表。</p>
+</li>
+<li><p>HTTPServer 或者是 WSGI 负责解析HTTP请求</p>
+</li>
+<li><p>HTTPConnection是一次处理的包装，在HTTPServer初始化的时候，会把Application的实例<br>传到HTTPServer中，当请求来了，就调用application，从而执行 <code>__call__</code> 方法</p>
+</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, request)</span>:</span></div><div class="line">    <span class="string">"""Called by HTTPServer to execute the request."""</span></div><div class="line">    transforms = [t(request) <span class="keyword">for</span> t <span class="keyword">in</span> self.transforms]</div><div class="line">    handler = <span class="keyword">None</span></div><div class="line">    args = []</div><div class="line">    kwargs = &#123;&#125;</div><div class="line">    handlers = self._get_host_handlers(request)</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> handlers:</div><div class="line">        handler = RedirectHandler(</div><div class="line">            self, request, url=<span class="string">"http://"</span> + self.default_host + <span class="string">"/"</span>)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">for</span> spec <span class="keyword">in</span> handlers:</div><div class="line">            match = spec.regex.match(request.path)</div><div class="line">            <span class="keyword">if</span> match:</div><div class="line">                <span class="comment"># None-safe wrapper around urllib.unquote to handle</span></div><div class="line">                <span class="comment"># unmatched optional groups correctly</span></div><div class="line">                <span class="function"><span class="keyword">def</span> <span class="title">unquote</span><span class="params">(s)</span>:</span></div><div class="line">                    <span class="keyword">if</span> s <span class="keyword">is</span> <span class="keyword">None</span>: <span class="keyword">return</span> s</div><div class="line">                    <span class="keyword">return</span> urllib.unquote(s)</div><div class="line">                handler = spec.handler_class(self, request, **spec.kwargs)</div><div class="line">                <span class="comment"># Pass matched groups to the handler.  Since</span></div><div class="line">                <span class="comment"># match.groups() includes both named and unnamed groups,</span></div><div class="line">                <span class="comment"># we want to use either groups or groupdict but not both.</span></div><div class="line">                kwargs = dict((k, unquote(v))</div><div class="line">                              <span class="keyword">for</span> (k, v) <span class="keyword">in</span> match.groupdict().iteritems())</div><div class="line">                <span class="keyword">if</span> kwargs:</div><div class="line">                    args = []</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    args = [unquote(s) <span class="keyword">for</span> s <span class="keyword">in</span> match.groups()]</div><div class="line">                <span class="keyword">break</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> handler:</div><div class="line">            handler = ErrorHandler(self, request, status_code=<span class="number">404</span>)</div><div class="line"></div><div class="line">    <span class="comment"># In debug mode, re-compile templates and reload static files on every</span></div><div class="line">    <span class="comment"># request so you don't need to restart to see changes</span></div><div class="line">    <span class="keyword">if</span> self.settings.get(<span class="string">"debug"</span>):</div><div class="line">        <span class="keyword">if</span> getattr(RequestHandler, <span class="string">"_templates"</span>, <span class="keyword">None</span>):</div><div class="line">            <span class="keyword">for</span> loader <span class="keyword">in</span> RequestHandler._templates.values():</div><div class="line">                loader.reset()</div><div class="line">        RequestHandler._static_hashes = &#123;&#125;</div><div class="line"></div><div class="line">    handler._execute(transforms, *args, **kwargs)</div><div class="line">    <span class="keyword">return</span> handler</div></pre></td></tr></table></figure>
+<ul>
+<li>IOStream是socket上的一层包装，也会传到HTTPConnection中。</li>
+</ul>
+<h3 id="从socket开始"><a href="#从socket开始" class="headerlink" title="从socket开始"></a>从socket开始</h3><p>好了，概览看完了，接下来我们从服务器socket开始过一遍。</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line">application = web.Application([</div><div class="line">    (<span class="string">r"/"</span>, MainPageHandler),</div><div class="line">])</div><div class="line">http_server = httpserver.HTTPServer(application)</div><div class="line">http_server.listen(<span class="number">8080</span>)</div><div class="line">ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+<p>这里我们看到了，首先实例化Application，里边设置了路由表。</p>
+<p>看看HTTPServer的demo:</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> httpserver</div><div class="line"><span class="keyword">import</span> ioloop</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_request</span><span class="params">(request)</span>:</span></div><div class="line">    message = <span class="string">"You requested %s\n"</span> % request.uri</div><div class="line">    request.write(<span class="string">"HTTP/1.1 200 OK\r\nContent-Length: %d\r\n\r\n%s"</span> % (</div><div class="line">                    len(message), message))</div><div class="line">    request.finish()</div><div class="line">http_server = httpserver.HTTPServer(handle_request)</div><div class="line">http_server.listen(<span class="number">8888</span>)</div><div class="line">ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+<p>实例化HTTPServer的时候，我们就要给它传一个处理http请求的东西，在项目中，也就是我们<br>上面经过实例化过的application。调用 <code>http_server.listen</code> 方法就会调用 <code>http_server.start</code><br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">listen</span><span class="params">(self, port, address=<span class="string">""</span>)</span>:</span></div><div class="line">    self.bind(port, address)</div><div class="line">    self.start(<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>start做了一件最重要的事情：把自己加入IOLoop。这样子，每当有请求来，epoll就会把<br>当前进程拉起来，然后开始执行，当然，首先，我们要找到 <strong>poll</strong> 才能说服你嘛。别着急，<br>我们先看看 <strong>ioloop.IOLoop.instance().start()</strong> 做了什么。<br>在 <a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/ioloop.py#L211" target="_blank" rel="external">这里</a><br>我们找到了事件循环，是吧，我就说一定是这样的^_^:<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div></pre></td></tr></table></figure></p>
+<p>并且在 <a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/ioloop.py#L243" target="_blank" rel="external">这里</a><br>我们看到了 poll。</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line">event_pairs = self._impl.poll(poll_timeout)</div></pre></td></tr></table></figure>
+<p>然后就在 self._handlers 里找到对应的handler，去处理。对于已经打开的socket，<br>那自然就是读写数据了，那么对于服务器起的这个socket，注册的handler是个啥呢？<br>玄机还藏在 httpserver.py里, 点<a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/httpserver.py#L175" target="_blank" rel="external">这里</a>:</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line">self.io_loop.add_handler(self._socket.fileno(),</div><div class="line">        self._handle_events,</div><div class="line">        ioloop.IOLoop.READ)</div></pre></td></tr></table></figure>
+<p>当服务器socket可读时，调用 <code>self._handle_events</code> 方法，ok，我们继续看<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># 省略了一部分代码，故不用Python高亮</span></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        connection, address = self._socket.accept()</div><div class="line">    <span class="keyword">except</span> ...</div><div class="line"></div><div class="line">    stream = iostream.IOStream(connection, io_loop=self.io_loop)</div><div class="line">    HTTPConnection(stream, address, self.request_callback,</div><div class="line">            self.no_keep_alive, self.xheaders)</div></pre></td></tr></table></figure></p>
+<p>实例化了一个 HTTPConnection, 并且还设置了 callback，这里的callback就是我们<br>实际项目中的 <em>application</em>.HTTPConnection的 __init__函数最后<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line">self._header_callback = stack_context.wrap(self._on_headers)</div><div class="line">self.stream.read_until(<span class="string">"\r\n\r\n"</span>, self._header_callback)</div></pre></td></tr></table></figure></p>
+<p>嗯~parse HTTP的头部，然后工厂模式调用不同的方法是不是？我猜是这样的，继续看<br>下去，越来越带劲了.<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_on_headers</span><span class="params">(self, data)</span>:</span></div><div class="line">    <span class="comment"># blablabla, parse...</span></div><div class="line">    method, uri, version = start_line.split(<span class="string">" "</span>)  <span class="comment"># GET /index HTTP/1.1</span></div><div class="line">    <span class="comment"># blablabla, ...</span></div><div class="line">    self._request = HTTPRequest(</div><div class="line">        connection=self, method=method, uri=uri, version=version,</div><div class="line">        headers=headers, remote_ip=self.address[<span class="number">0</span>]</div><div class="line">    )</div><div class="line">    <span class="comment"># blablabla, ...</span></div><div class="line">    self.request_callback(self._request)</div></pre></td></tr></table></figure></p>
+<p>到这里，我还记得，最后一句，就是调用 application.__call__ 方法，你还记得吗？<br>希望还没晕。千万别转晕了，现在我们要转回去，跳到 Application 里了哦~<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, request)</span>:</span></div><div class="line">    transforms = [t(request) <span class="keyword">for</span> t <span class="keyword">in</span> self.transforms]</div><div class="line">    handler = <span class="keyword">None</span></div><div class="line">    args = []</div><div class="line">    kwargs = &#123;&#125;</div><div class="line">    handlers = self._get_host_handlers(request)</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> handlers:</div><div class="line">        <span class="keyword">pass</span>  <span class="comment"># 略</span></div></pre></td></tr></table></figure></p>
+<p>咱们继续跳，现在该看self._get_host_handlers干了什么了！<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_host_handlers</span><span class="params">(self, request)</span>:</span></div><div class="line">    host = request.host.lower().split(<span class="string">':'</span>)[<span class="number">0</span>]</div><div class="line">    <span class="keyword">for</span> pattern, handlers <span class="keyword">in</span> self.handlers:</div><div class="line">        <span class="keyword">if</span> pattern.match(host):</div><div class="line">            <span class="keyword">return</span> handlers</div><div class="line">    <span class="keyword">return</span> <span class="keyword">None</span></div></pre></td></tr></table></figure></p>
+<p>看到没，在application的 handlers 里找到匹配的 handler，然后返回，所以文档上说，<br>如果一个URL匹配到了n个handler，调用的是第一个被找到的(根据你放列表的顺序)。<br>我们先继续往下看，初始化完 handler 以后，代码执行了 handler的 <code>_execute</code> 方法，<br>以及在<a href="https://github.com/tornadoweb/tornado/blob/branch1.2/tornado/web.py#L1182" target="_blank" rel="external">这里</a><br>我们看到了执行代码的操作::<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line">handler = spec.handler_class(self, request, **spec.kwargs)  <span class="comment"># 找 Handler</span></div><div class="line">handler._execute(transforms, *args, **kwargs)  <span class="comment"># 执行</span></div></pre></td></tr></table></figure></p>
+<p>然后我们再回去看 __call__里的代码，首先我们看到__init__<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, application, request, **kwargs)</span>:</span></div></pre></td></tr></table></figure></p>
+<p>然后，我们再看_execute:</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_execute</span><span class="params">(self, transforms, *args, **kwargs)</span>:</span></div><div class="line">    <span class="string">"""Executes this request with the given output transforms."""</span></div><div class="line">    self._transforms = transforms</div><div class="line">    <span class="keyword">with</span> stack_context.ExceptionStackContext(</div><div class="line">        self._stack_context_handle_exception):</div><div class="line">        <span class="keyword">if</span> self.request.method <span class="keyword">not</span> <span class="keyword">in</span> self.SUPPORTED_METHODS:</div><div class="line">            <span class="keyword">raise</span> HTTPError(<span class="number">405</span>)</div><div class="line">        <span class="comment"># If XSRF cookies are turned on, reject form submissions without</span></div><div class="line">        <span class="comment"># the proper cookie</span></div><div class="line">        <span class="keyword">if</span> self.request.method <span class="keyword">not</span> <span class="keyword">in</span> (<span class="string">"GET"</span>, <span class="string">"HEAD"</span>) <span class="keyword">and</span> \</div><div class="line">        self.application.settings.get(<span class="string">"xsrf_cookies"</span>):</div><div class="line">            self.check_xsrf_cookie()</div><div class="line">        self.prepare()</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._finished:</div><div class="line">            getattr(self, self.request.method.lower())(*args, **kwargs)</div><div class="line">            <span class="keyword">if</span> self._auto_finish <span class="keyword">and</span> <span class="keyword">not</span> self._finished:</div><div class="line">                self.finish()</div></pre></td></tr></table></figure>
+<p>看到没，工厂在此:<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line">getattr(self, self.request.method.lower())(*args, **kwargs)</div></pre></td></tr></table></figure></p>
+<p>干！终于找到你了！这里前后调用了两个钩子，首先 self.prepare 然后 self.finish<br>现在你知道可以用他们来做一些类似中间件的工作了吧~</p>
+<p>好了，这之后就是 finish, flush 等等了，我就不继续讲下去了。总结一下，一开始我以为<br>工厂会在很早出现，没想到一直到 _execute 才出现.</p>
+<p>估计这样做是为了代码不太散乱？</p>
+<p>如果你对最新的tornado代码有兴趣，也可以去看，不过看完之后可能会一头雾水，因为<br>对比1.2来说，代码量实在是大多了~</p>
+<p>原文地址在 <a href="https://github.com/jiajunhuang/blog/blob/master/tornado.rst" target="_blank" rel="external">这里</a></p>
+
+                
+<p class="pink-link-context">
+    <a href="/2016/09/04/个人简历/" rel="next" title="个人简历">
+    上一篇：个人简历
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2016/01/26/sqlalchemy分表处理/" rel="next" title="sqlalchemy分表处理">
+    下一篇：sqlalchemy分表处理
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

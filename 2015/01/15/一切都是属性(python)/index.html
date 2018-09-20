@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>一切都是属性(python) | 阿毛的博客</title>
+    <meta name="author" content="Amao Zhao">
+    
+    <meta name="description" content="对于菜鸟来说,python中如何创建类(Class)应该是很简单的,比如:class Foo(object):    pass
+这就是python的类(很无聊对吧?). 我们也可以实例化这个类:f = Foo()
+实际上, 我们如果输出这个实例的类型,会发现它就是个类:&amp;gt;&amp;gt;&amp;gt; type(f)&amp;lt;class &#39;__main__.Foo&#39;&amp;gt;">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="一切都是属性(python)"/>
+    <meta property="og:site_name" content="AmaoZhao"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="AmaoZhao" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="indigo">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">AmaoZhao</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav indigo darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="https://avatars0.githubusercontent.com/u/398331?v=3&amp;s=466" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">赵少君</p>
+                        <p class="desc">Python/Angular/Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav indigo darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/总结/">
+                    总结 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/编辑器/">
+                    编辑器 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Angular/">
+                    Angular <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/机器学习/">
+                    机器学习 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/机器学习/算法/">
+                    算法 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Django/">
+                    Django <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Python/">
+                    Python <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Javascript/">
+                    Javascript <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/SQLalchemy/">
+                    SQLalchemy <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/面试/">
+                    面试 <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/API/">
+                    API <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper indigo">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Python/">Python</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>一切都是属性(python)</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2015-01-15T03:22:51.000Z"><a href="/2015/01/15/一切都是属性(python)/">2015-01-15</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Python/" class="chip pink lighten-1">Python</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p>对于菜鸟来说,python中如何创建类(Class)应该是很简单的,比如:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
+<p>这就是python的类(很无聊对吧?). 我们也可以实例化这个类:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line">f = Foo()</div></pre></td></tr></table></figure></p>
+<p>实际上, 我们如果输出这个实例的类型,会发现它就是个类:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(f)</div><div class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">__main__</span>.<span class="title">Foo</span>'&gt;</span></div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>现在, 我们已经创建了Foo类并且实例化了一个对象f. 但是在实际应用中这肯定不够, 比如我们想定义对象的变量. 我们知道可以写<strong>init</strong>函数(注意这个函数是在new一个对象后才执行的), 比如:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></div><div class="line">      self.x = x</div><div class="line">      self.y = y</div><div class="line"></div><div class="line">&gt;&gt; f = Foo(<span class="number">100</span>, <span class="string">'abc'</span>)</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.x</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.y</div><div class="line"><span class="string">'abc'</span></div></pre></td></tr></table></figure></p>
+<p>表面上看, 上面的例子是对f这个F类对象设置了x,y变量.但实际上, 类变量和实例变量在操作上是没有区别的. 到底该如何看待python中的类变量和实例变量呢?</p>
+<p>关键在于Foo类中的<strong>init</strong>方法, 我们添加了一个新属性叫self, 它指向我们新创建的实例对象(f). 可以说属性是python的一个基本属性. 只要理解了属性, 那就对python有了更深入的理解.</p>
+<p>python中的每个对象都有属性. 你可以通过python的内置函数dir来查看. 比如:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'abc'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>len(dir(s))</div><div class="line"><span class="number">71</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dir(s)[:<span class="number">5</span>]</div><div class="line">[<span class="string">'__add__'</span>, <span class="string">'__class__'</span>, <span class="string">'__contains__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__doc__'</span>]</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>i = <span class="number">123</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>len(dir(i))</div><div class="line"><span class="number">64</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dir(i)[:<span class="number">5</span>]</div><div class="line">[<span class="string">'__abs__'</span>, <span class="string">'__add__'</span>, <span class="string">'__and__'</span>, <span class="string">'__class__'</span>, <span class="string">'__cmp__'</span>]</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>len(dir(t))</div><div class="line"><span class="number">32</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dir(t)[:<span class="number">5</span>]</div><div class="line">[<span class="string">'__add__'</span>, <span class="string">'__class__'</span>, <span class="string">'__contains__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__doc__'</span>]</div></pre></td></tr></table></figure></p>
+<p>由此可以看出, python中的基本数据类型(像int, str等)都有很多属性. 我们只是罗列出了前5个而已, 有兴趣的童鞋可以自己实验.</p>
+<p>The thing is, these attribute names returned by “dir” are strings. How can I use this string to get or set the value of an attribute? We somehow need a way to translate between the world of strings and the world of attribute names.<br>我们发现上面例子中返回的属性都是字符串(string), 那我们如何获得这些属性呢?<br>python提供了内置的方法getattr, 如下所示:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>getattr(t, <span class="string">'__class__'</span>)</div><div class="line">tuple</div></pre></td></tr></table></figure></p>
+<p>上面的例子等同于:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>t.__class__</div><div class="line">tuple</div></pre></td></tr></table></figure></p>
+<p>所以, 在python中 ‘.’操作和’getattr’是一样的. 要说有区别那就是’.’操作更简单而’getattr’更灵活.</p>
+<p>另外,python也提供了内置函数’setattr’, 它的作用等同于’.’操作的赋值.<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>f = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>setattr(f, <span class="string">'x'</span>, <span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>getattr(f, <span class="string">'x'</span>)</div><div class="line"><span class="number">5</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.x</div><div class="line"><span class="number">5</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.x = <span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.x</div><div class="line"><span class="number">100</span></div></pre></td></tr></table></figure></p>
+<p>As with all assignments in Python, the new value can be any legitimate Python object. In this case, we’ve assigned f.x to be 5 and 100, both integers, but there’s no reason why we couldn’t assign a tuple, dictionary, file, or even a more complex object. From Python’s perspective, it really doesn’t matter.</p>
+<p>如果我们给一个对象赋一个没有定义的属性值会如何呢? 这样也可以!<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.new_attrib = <span class="string">'hello'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.new_attrib</div><div class="line"><span class="string">'hello'</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.favorite_number = <span class="number">72</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.favorite_number</div><div class="line"><span class="number">72</span></div></pre></td></tr></table></figure></p>
+<p>所以, 我们可以动态地创建和分配属性. 但是如果读取一个未定义的属性就会报错:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>f.no_such_attribute</div><div class="line">AttributeError: <span class="string">'Foo'</span> object has no attribute <span class="string">'no_such_attribute'</span></div></pre></td></tr></table></figure></p>
+<p>python对象有属性,并且可以动态获取或是修改.而python中的函数也是对象,所以函数也可以设置属性:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"Hello"</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>hello.abc_def = <span class="string">'hi there!'</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>hello.abc_def</div><div class="line"><span class="string">'hi there!'</span></div></pre></td></tr></table></figure></p>
+<p>python中的函数是对象所以有自己的属性.同样地,也可以设置属性.</p>
+<p>所以, 上面的例子中(Foo)类中的<strong>init</strong>方法中可以不设置变量, 而在类实例化对象上采用动态赋值是完全可以的.</p>
+<p>This is one of those conventions that is really useful to follow: Yes, you can create and assign object attributes wherever you want. But it makes life so much easier for everyone if you assign all of an object’s attributes in <strong>init</strong>, even if it’s just to give it a default value, or even None. Just because you can create an attribute whenever you want doesn’t mean that you should do such a thing.</p>
+<p>既然一切对象都有属性, 那么我们看看类:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
+<p>类也可以设置属性:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo.bar = <span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo.bar</div><div class="line"><span class="number">100</span></div></pre></td></tr></table></figure></p>
+<p>类也是对象, 所以类也有属性. 但是我们如何理解类属性和类对象属性(比如在<strong>init</strong>函数中定义的x, y)呢?</p>
+<p>这个问题其实很好理解. 主要区别在于函数定义和类定义. 函数主体只有在函数调用时才会执行, 而类主体是立即执行且只执行一次! 我们可以在类主体中执行函数代码:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">    print(<span class="string">"Hello from inside of the class!"</span>)</div></pre></td></tr></table></figure></p>
+<p>同样的, 也可以什么都不做, 只定义属性:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">    x = <span class="number">100</span></div></pre></td></tr></table></figure></p>
+<p>如果我们在类定义中设置变量, 实际情况是赋值不成功的. 这样是创建类属性. 所以<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line">Foo.x</div></pre></td></tr></table></figure></p>
+<p>会返回100.</p>
+<p>在类主体中定义变量会成为类属性, 那类中的函数呢? 其实函数也是属性:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">blah</span><span class="params">(self)</span>:</span></div><div class="line">            <span class="keyword">return</span> <span class="string">"blah"</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo.blah</div><div class="line">&lt;unbound method Foo.blah&gt;</div></pre></td></tr></table></figure></p>
+<p>其实定义一个函数就等于在当前命名空间(通常是全局空间)定义一个新属性. 那么在类中定义一个函数也就等于为类创建了一个新属性(只是这个属性是函数而已).</p>
+<p>换言之: 对象方法不是绑定在对象上. 当你在类(Foo)对象f上调用对象函数”f.blah()”时会调用类(Foo)的函数blah(),并传递对象f给”blah”的第一个参数(也就是self). 所以调用”f.blah()”和”Foo.blah(f)”的效果是完全相同的.</p>
+<p>但是, 当我调用”f.blah()”时, python是如果知道要调用”Foo.blah()”的? f和F完全是2个不同的对象; f是Foo的一个实例, 而Foo是type的一个实例. python为什么会调用Foo的”blah()”?</p>
+<p>这就要说道python的属性查找规则了. 对于变量, python遵循LEGB规则顺序查找: L(Local), E(Enclosing), G(Global), B(Builtin). 但是对于属性, python遵循不同的规则: 首先,在对象查找. 其次,在对象的类上查找. 以此类推, 直到最顶级的类(object).</p>
+<p>对应我们的例子中python会先在f对象想查找blah属性, 未找到后会在它的类(Foo)上查找, 找到后执行.</p>
+<p>所以, 在python中其实没有所谓的”对象变量”或”类变量”的. 某些情况属性定义在类上, 而某些情况属性又定义在对象上.(当然, 类也是type对象, 在这里我们不讨论). 这也解释了为什么人们通常都会在类上定义属性, 因为这些属性对于它的对象来讲都是可见的.Yes, that is true, but it sometimes makes more sense than others to do so.</p>
+<p>What you really want to avoid is creating an attribute on the instance that has the same name as an attribute on the class. 请看下面的例子:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    population = <span class="number">0</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, first, last)</span>:</span></div><div class="line">        self.first = first        </div><div class="line">        self.last = last</div><div class="line">        self.population += <span class="number">1</span></div><div class="line"></div><div class="line">p1 = Person(<span class="string">'Reuven'</span>, <span class="string">'Lerner'</span>)</div><div class="line">p2 = Person(<span class="string">'foo'</span>, <span class="string">'bar'</span>)</div></pre></td></tr></table></figure></p>
+<p>看起来好像没什么问题. 但是很快发现<strong>Person.population</strong>一直是0, 但<strong>p1.population</strong>和<strong>p2.population</strong>都被设置成了1. 怎么会这样?</p>
+<p>注意这行代码:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line">self.population += <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>它会这样执行:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line">self.population = self.population + <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>右边的”self.population”会先于左边的”self.population”计算. 因此, 对于每个实例来说, 先在自己的属性中查找population, 未找到后会在它的类上继续查找, 找到后返回0, 所以”self.population”都会是0, 然后执行+1, 返回1!</p>
+<p>We can actually see what attributes were actually set on the instance and on the class, using a list comprehension:<br><figure class="highlight python"><table><tr><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">blah</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">"blah"</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[attr_name <span class="keyword">for</span> attr_name <span class="keyword">in</span> dir(f) <span class="keyword">if</span> attr_name <span class="keyword">not</span> <span class="keyword">in</span> dir(Foo)]</div><div class="line">[]</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[attr_name <span class="keyword">for</span> attr_name <span class="keyword">in</span> dir(Foo) <span class="keyword">if</span> attr_name <span class="keyword">not</span> <span class="keyword">in</span> dir(object)]</div><div class="line">[<span class="string">'__dict__'</span>, <span class="string">'__module__'</span>, <span class="string">'__weakref__'</span>, <span class="string">'blah'</span>]</div></pre></td></tr></table></figure></p>
+<p>In the above, we first define “Foo”, with a method “blah”. That method definition, as we know, is stored in the “blah” attribute on Foo. We haven’t assigned any attributes to f, which means that the only attributes available to f are those in its class.</p>
+<p>希望这篇文章对你学习python有点帮助!</p>
+<p>原文地址: <a href="http://blog.lerner.co.il/python-attributes/" target="_blank" rel="external">http://blog.lerner.co.il/python-attributes/</a></p>
+<p><del>I hope that this has helped to put Python’s attributes into perspective. If this sort of thing interests you, you might be interested in my <a href="https://www.eventbrite.com/e/full-day-online-class-in-object-oriented-python-tickets-13687653139" target="_blank" rel="external">full-day, live online class about object-oriented Python</a>, which I’ll next be offering on October 29th.  I’m also giving a <a href="https://www.eventbrite.com/e/full-day-online-class-in-functional-programming-in-python-tickets-13687633079" target="_blank" rel="external">full-day, live online class about functional programming in Python</a> on October 27th, and a free (no obligation) hour-long <a href="https://www.eventbrite.com/e/how-functional-programming-will-make-you-a-better-python-programmer-october-2014-tickets-13687895865" target="_blank" rel="external">Webinar on October 22nd about functional programming in Python</a>.</del></p>
+
+                
+<p class="pink-link-context">
+    <a href="/2015/01/29/python lambda教程/" rel="next" title="python lambda教程">
+    上一篇：python lambda教程
+  </a>
+</p>
+
+
+
+<p class="pink-link-context">
+    <a href="/2015/01/13/Python and Flask Are Ridiculously Powerful/" rel="next" title="Python and Flask Are Ridiculously Powerful">
+    下一篇：Python and Flask Are Ridiculously Powerful
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large pink">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect green" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse yellow darken-1"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer indigo darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                <div class="site-visitors-container white-text">
+                    <span>
+                        <i class="fa fa-user"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+                    </span>
+                    <span>&nbsp;|&nbsp;</span>
+                    <span>
+                        <i class="fa fa-eye"></i>
+                        <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+                    </span>
+                </div>
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="https://github.com/amaozhao" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 example.com, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("TeX-AMS-MML_HTMLorMML");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
